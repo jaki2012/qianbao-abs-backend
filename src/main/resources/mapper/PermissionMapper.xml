@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qianbao.mapper.PermissionMapper">
+    <select id="findAll"  resultType="com.qianbao.domain.Permission">
+        SELECT * from tbPermission ;
+    </select>
+
+    <select id="findByAdminUserID" parameterType="int" resultType="com.qianbao.domain.Permission">
+        select p.*
+        from tbUser u
+        LEFT JOIN tbRole r on u.roleID = r.roleID
+        LEFT JOIN tbRole_Permission rp on r.roleID = rp.roleID
+        LEFT JOIN tbPermission p on p.permissionID = rp.permissionID
+        where u.userID=#{userID}
+    </select>
+</mapper>
