@@ -21,7 +21,9 @@ public class TimeUtil {
         day = (day.length() == 1 ? 0 + day : day);
 
         StringBuilder todayStrBuilder = new StringBuilder();
-        todayStrBuilder.append(year).append(month).append(day);
+        todayStrBuilder.append(year)
+                .append(month)
+                .append(day);
         return todayStrBuilder.toString();
     }
 }

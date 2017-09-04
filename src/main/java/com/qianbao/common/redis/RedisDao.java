@@ -1,9 +1,9 @@
-package com.qianbao.redis;
+package com.qianbao.common.redis;
 
 /**
  * @author lijiechu
  * @create on 17/9/4
- * @description
+ * @description redis缓存dao，主要用于业务自增流水号的生成
  */
 
 public interface RedisDao {

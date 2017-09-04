@@ -2,7 +2,7 @@ package com.qianbao.service.impl;
 
 import com.qianbao.common.util.StringUtil;
 import com.qianbao.common.util.TimeUtil;
-import com.qianbao.redis.RedisDao;
+import com.qianbao.common.redis.RedisDao;
 import com.qianbao.service.SerialNumberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

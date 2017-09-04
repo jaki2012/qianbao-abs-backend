@@ -1,6 +1,7 @@
 package com.qianbao.controller;
 
-import com.qianbao.common.Result;
+import com.qianbao.common.sys.Result;
+import com.qianbao.common.sys.Constants;
 import com.qianbao.common.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -39,9 +40,9 @@ public class AuthController {
             // 验证
             Authentication auth = authenticationManager.authenticate(authRequest);
             SecurityContextHolder.getContext().setAuthentication(auth);
-            return ResultUtil.success("登录成功");
+            return ResultUtil.success(Constants.USER_LOGIN_SUCCESS);
         } catch (AuthenticationException e) {
-            return ResultUtil.error(403,"登录失败");
+            return ResultUtil.error(403,Constants.USER_LOGIN_FAILED);
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.qianbao.common.util;
 
-import com.qianbao.common.Result;
+import com.qianbao.common.sys.Result;
 
 /**
  * @author lijiechu

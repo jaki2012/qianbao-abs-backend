@@ -1,10 +1,10 @@
 package com.qianbao.config;
 
 import com.alibaba.fastjson.JSON;
-import com.qianbao.common.MyFilterSecurityInterceptor;
-import com.qianbao.common.Result;
+import com.qianbao.service.security.MyFilterSecurityInterceptor;
+import com.qianbao.common.sys.Result;
 import com.qianbao.common.util.ResultUtil;
-import com.qianbao.service.CustomUserDetailsService;
+import com.qianbao.service.security.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

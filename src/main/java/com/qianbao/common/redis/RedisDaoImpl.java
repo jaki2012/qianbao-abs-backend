@@ -1,4 +1,4 @@
-package com.qianbao.redis;
+package com.qianbao.common.redis;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

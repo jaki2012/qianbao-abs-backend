@@ -1,4 +1,4 @@
-package com.qianbao.common;
+package com.qianbao.service.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.SecurityMetadataSource;

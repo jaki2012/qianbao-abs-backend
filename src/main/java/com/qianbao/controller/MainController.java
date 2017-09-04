@@ -1,6 +1,6 @@
 package com.qianbao.controller;
 
-import com.qianbao.common.Result;
+import com.qianbao.common.sys.Result;
 import com.qianbao.common.util.ResultUtil;
 import com.qianbao.domain.Asset;
 import com.qianbao.domain.Debt;

@@ -1,4 +1,4 @@
-package com.qianbao.service;
+package com.qianbao.service.security;
 
 import com.qianbao.domain.Permission;
 import com.qianbao.domain.User;

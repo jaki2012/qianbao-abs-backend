@@ -1,4 +1,4 @@
-package com.qianbao.common;
+package com.qianbao.common.sys;
 
 import java.io.Serializable;
 
