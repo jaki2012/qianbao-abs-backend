@@ -1,26 +1,14 @@
 package com.qianbao.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.qianbao.common.Result;
-import com.qianbao.common.ResultUtil;
+import com.qianbao.common.util.ResultUtil;
+import com.qianbao.domain.Asset;
 import com.qianbao.domain.Debt;
+import com.qianbao.service.AssetService;
 import com.qianbao.service.DebtService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -35,29 +23,21 @@ public class MainController {
     @Autowired
     private DebtService debtService;
 
+    @Autowired
+    private AssetService assetService;
+
     @RequestMapping(value = "/debts", method = RequestMethod.GET)
     public Result acquireDebts(@RequestParam("page")int page, @RequestParam("length")int length){
         List<Debt> debts = debtService.acquireDebts(page, length);
         return ResultUtil.success(debts);
     }
 
-    @Autowired
-    AuthenticationManager authenticationManager;
-    @RequestMapping(value="/doLogin",method = RequestMethod.POST)
-    public String doLogin(HttpServletRequest request, HttpServletResponse response,
-                              @RequestParam("userName")String userName, @RequestParam("password") String password){
-        String str = new String();
-        try {
-            // 内部登录请求
-            UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(userName, password, AuthorityUtils.commaSeparatedStringToAuthorityList(""));
-            // 验证
-            Authentication auth = authenticationManager.authenticate(authRequest);
-            SecurityContextHolder.getContext().setAuthentication(auth);
-           str = "1";
-        } catch (AuthenticationException e) {
-            str = "2";
-        }
-        return str;
+    @RequestMapping(value = "/asset", method = RequestMethod.POST)
+    public Result packageDebts(@RequestParam("debtsIDs") String [] debtsIDs, @RequestBody Asset asset){
+        if(0 == assetService.generateAsset(debtsIDs, asset))
+            return ResultUtil.success(debtsIDs[0]);
+        else
+            return ResultUtil.error(400, "债权打包金额不符合要求");
     }
 
 }

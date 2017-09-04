@@ -25,4 +25,9 @@ public class DebtServiceImpl implements DebtService  {
         List<Debt> debts = debtMapper.findByPage(start, length);
         return debts;
     }
+
+    @Override
+    public int packageDebt(String debtID) {
+        return debtMapper.packageDebt(debtID);
+    }
 }

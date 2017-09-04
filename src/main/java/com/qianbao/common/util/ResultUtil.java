@@ -1,4 +1,6 @@
-package com.qianbao.common;
+package com.qianbao.common.util;
+
+import com.qianbao.common.Result;
 
 /**
  * @author lijiechu

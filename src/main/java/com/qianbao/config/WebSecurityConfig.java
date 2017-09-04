@@ -3,7 +3,7 @@ package com.qianbao.config;
 import com.alibaba.fastjson.JSON;
 import com.qianbao.common.MyFilterSecurityInterceptor;
 import com.qianbao.common.Result;
-import com.qianbao.common.ResultUtil;
+import com.qianbao.common.util.ResultUtil;
 import com.qianbao.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -39,16 +39,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/abs-api/v1.0/debts").authenticated()
-                .antMatchers("/abs-api/v1.0/doLogin").permitAll()
+                .antMatchers("/abs-api/v1.0/login").permitAll()
                 .anyRequest()
                 .authenticated()
-//                .and()
-//                .formLogin()
-//                .loginPage("/doLogin")
-//                .permitAll()
                 .and()
                 .logout()
-                .logoutUrl("/logout")
+                .logoutUrl("/abs-api/v1.0/logout")
                 // 防止跳转到登录页面导致404
                 .logoutSuccessHandler(new LogoutSuccessHandler() {
                     @Override
@@ -56,12 +52,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                         httpServletResponse.setHeader("Content-type", "application/json;charset=UTF-8");
                         httpServletResponse.setCharacterEncoding("UTF-8");
                         PrintWriter out = httpServletResponse.getWriter();
-                        Result result = ResultUtil.success("退出成功");
+                        Result result = ResultUtil.success("退出登录成功");
                         out.write(JSON.toJSONString(result));
                     }
                 })
-                //.logoutSuccessUrl("/abs-api/v1.0/logoutSuccessful")
-        .permitAll();
+                .permitAll();
         http.addFilterBefore(myFilterSecurityInterceptor, FilterSecurityInterceptor.class)
                 .csrf().disable();
     }

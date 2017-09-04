@@ -17,4 +17,11 @@ public interface DebtService {
      * @return
      */
     List<Debt> acquireDebts(int page, int length);
+
+    /**
+     * 债权状态变更为已打包
+     * @param debtID
+     * @return
+     */
+    int packageDebt(String debtID);
 }
