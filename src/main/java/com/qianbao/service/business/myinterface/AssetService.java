@@ -1,13 +1,17 @@
-package com.qianbao.service;
+package com.qianbao.service.business.myinterface;
 
 import com.qianbao.domain.Asset;
+
+import java.util.List;
 
 /**
  * @author lijiechu
  * @create on 17/9/4
- * @description 资产管理服务
+ * @description 资产管理Service类
  */
 public interface AssetService {
 
     int generateAsset(String[] debtsIDs, Asset asset);
+
+    List<Asset> findAssets(int userID);
 }

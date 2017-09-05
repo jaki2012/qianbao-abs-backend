@@ -9,7 +9,9 @@ public class Constants {
 
     public final static int SEQUENCE_LENGTH = 4;
 
+    /**
+     * 提示信息相关
+     */
     public final static String USER_LOGIN_SUCCESS = "登录成功";
-
     public final static String USER_LOGIN_FAILED = "登录失败";
 }

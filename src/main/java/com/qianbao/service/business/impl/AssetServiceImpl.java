@@ -1,26 +1,31 @@
-package com.qianbao.service.impl;
+package com.qianbao.service.business.impl;
 
 import com.qianbao.domain.Asset;
 import com.qianbao.mapper.AssetMapper;
-import com.qianbao.service.AssetService;
-import com.qianbao.service.DebtService;
-import com.qianbao.service.SerialNumberService;
+import com.qianbao.mapper.UserMapper;
+import com.qianbao.service.business.myinterface.AssetService;
+import com.qianbao.service.business.myinterface.DebtService;
+import com.qianbao.service.business.myinterface.SerialNumberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author lijiechu
  * @create on 17/9/4
  * @description 资产服务的实现类
- * @see com.qianbao.service.AssetService
+ * @see AssetService
  */
 @Service
 public class AssetServiceImpl implements AssetService{
 
     @Autowired
     private AssetMapper assetMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Autowired
     private DebtService debtService;
@@ -47,4 +52,13 @@ public class AssetServiceImpl implements AssetService{
         assetMapper.insert(asset);
         return 0;
     }
+
+    @Override
+    public List<Asset> findAssets(int userID) {
+        int roleID = userMapper.getRoleIDByUserID(userID);
+        List<Asset> assets = assetMapper.findByRoleID(roleID);
+        return assets;
+    }
+
+
 }

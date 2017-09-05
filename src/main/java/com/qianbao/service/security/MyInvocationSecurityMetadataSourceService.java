@@ -36,7 +36,6 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
         List<Permission> permissions = permissionMapper.findAll();
         for(Permission permission: permissions) {
             configAttributes = new ArrayList<>();
-            // 这里可以将permission.getPermissionName()换成getRoleName 以配合前端hasRole("");
             configAttribute = new SecurityConfig(permission.getPermissionName());
             configAttributes.add(configAttribute);
             map.put(permission.getUrl(), configAttributes);

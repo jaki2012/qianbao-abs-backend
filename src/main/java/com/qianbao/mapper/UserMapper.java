@@ -14,6 +14,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Mapper
 public interface UserMapper {
+
     @Select("select * from tbUser where tbUser.username = #{username}")
     User findByUsername(@Param("username")String username);
+
+    @Select("select tbUser.roleID from tbUser where tbUser.userID = #{userID}")
+    int getRoleIDByUserID(@Param("userID")int userID);
 }

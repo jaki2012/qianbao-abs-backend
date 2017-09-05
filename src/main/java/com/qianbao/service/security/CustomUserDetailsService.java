@@ -1,6 +1,7 @@
 package com.qianbao.service.security;
 
 import com.qianbao.domain.Permission;
+import com.qianbao.domain.SecurityUser;
 import com.qianbao.domain.User;
 import com.qianbao.mapper.PermissionMapper;
 import com.qianbao.mapper.UserMapper;
@@ -38,7 +39,10 @@ public class CustomUserDetailsService implements UserDetailsService {
                     grantedAuthorities.add(grantedAuthority);
                 }
             }
-            return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),grantedAuthorities);
+            SecurityUser securityUser = new SecurityUser(user.getUsername(), user.getPassword(), grantedAuthorities);
+            securityUser.setUserID(user.getUserID());
+            return securityUser;
+            // return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),grantedAuthorities);
         } else {
             throw new UsernameNotFoundException("User: " + username + " do not exist!");
         }

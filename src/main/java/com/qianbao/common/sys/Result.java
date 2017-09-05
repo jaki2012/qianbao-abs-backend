@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @author lijiechu
  * @create on 17/9/1
- * @description 对返回结果进行封装
+ * @description SpringMVCController返回结果封装类
  */
 public class Result<T> implements Serializable{
 

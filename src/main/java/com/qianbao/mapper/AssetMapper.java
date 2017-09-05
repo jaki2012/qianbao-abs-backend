@@ -2,7 +2,10 @@ package com.qianbao.mapper;
 
 import com.qianbao.domain.Asset;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author lijiechu
@@ -13,4 +16,6 @@ import org.springframework.stereotype.Repository;
 @Mapper
 public interface AssetMapper {
     int insert(Asset asset);
+
+    List<Asset> findByRoleID(@Param("roleID") int roleID);
 }

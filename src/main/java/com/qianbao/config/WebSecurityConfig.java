@@ -38,8 +38,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/abs-api/v1.0/debts").authenticated()
-                .antMatchers("/abs-api/v1.0/login").permitAll()
+                .antMatchers("/**/login")
+                .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -64,7 +64,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         //user Details Service验证
-        auth.userDetailsService(customUserDetailsService());
+        auth// .eraseCredentials(false)
+                .userDetailsService(customUserDetailsService());
     }
 
     /**

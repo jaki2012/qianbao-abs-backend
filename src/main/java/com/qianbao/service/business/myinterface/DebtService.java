@@ -1,4 +1,4 @@
-package com.qianbao.service;
+package com.qianbao.service.business.myinterface;
 
 import com.qianbao.domain.Debt;
 
@@ -10,6 +10,7 @@ import java.util.List;
  * @description
  */
 public interface DebtService {
+
     /**
      * 获取债权
      * @param page 第几页
@@ -19,9 +20,16 @@ public interface DebtService {
     List<Debt> acquireDebts(int page, int length);
 
     /**
-     * 债权状态变更为已打包
+     * 打包债权并将其状态变更为已打包
      * @param debtID
      * @return
      */
     int packageDebt(String debtID);
+
+    /**
+     * 退回债权并将其状态变更为已退回
+     * @param debtID
+     * @return
+     */
+    int returnDebt(String debtID);
 }

@@ -1,13 +1,17 @@
 package com.qianbao.domain;
 
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Collection;
 import java.util.Date;
 
 /**
  * @author lijiechu
  * @create on 17/9/1
- * @description 用户的业务代码
+ * @description 用户的业务代码,继承SecurityUser以从session中获取更多信息
  */
 public class User {
+
     private int userID;
     private int companyID;
     private int roleID;
@@ -89,4 +93,5 @@ public class User {
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
     }
+
 }

@@ -12,7 +12,7 @@ public class StringUtil {
     /**
      * 根据业务情况对当天序列号进行自增
      * @param sequence
-     * @return
+     * @return 格式化的业务单据号
      */
     public static String fillStringWillZeroes(String sequence){
         StringBuilder formattedSequence = new StringBuilder();
