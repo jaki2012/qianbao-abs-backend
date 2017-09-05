@@ -1,20 +1,23 @@
 package com.qianbao.config;
 
 import com.alibaba.fastjson.JSON;
-import com.qianbao.service.security.MyFilterSecurityInterceptor;
+import com.qianbao.service.security.*;
 import com.qianbao.common.sys.Result;
 import com.qianbao.common.util.ResultUtil;
-import com.qianbao.service.security.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import javax.servlet.ServletException;
@@ -37,6 +40,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        // 登录后无权限用户
+        http.exceptionHandling().accessDeniedHandler(myAccessDeniedHandler());
+
+        // 未登录用户
+        http.exceptionHandling().authenticationEntryPoint(myAuthenticationEntryPoint());
+
         http.authorizeRequests()
                 .antMatchers("/**/login")
                 .permitAll()
@@ -44,7 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .authenticated()
                 .and()
                 .logout()
-                .logoutUrl("/abs-api/v1.0/logout")
+                .logoutUrl("/auth/logout")
                 // 防止跳转到登录页面导致404
                 .logoutSuccessHandler(new LogoutSuccessHandler() {
                     @Override
@@ -84,5 +93,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     @Bean
     public CustomUserDetailsService customUserDetailsService(){
         return new CustomUserDetailsService();
+    }
+
+
+    @Bean
+    public AccessDeniedHandler myAccessDeniedHandler() {
+        return new MyAccessDeniedHandler();
+    }
+
+    @Bean AuthenticationEntryPoint myAuthenticationEntryPoint(){
+        return new MyAuthenticationEntryPoint();
     }
 }

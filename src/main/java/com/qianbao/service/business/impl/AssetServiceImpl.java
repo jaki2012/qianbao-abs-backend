@@ -35,12 +35,12 @@ public class AssetServiceImpl implements AssetService{
 
     @Override
     @Transactional
-    public int generateAsset(String[] debtsIDs, Asset asset) {
+    public int generateAsset(String[] debtsNumbers, Asset asset) {
 //        if(asset.getBasicAsset() < 4000000000l) {
 //            return 1;
 //        }
-        for(String debtID : debtsIDs){
-            debtService.packageDebt(debtID);
+        for(String debtNumber : debtsNumbers){
+            debtService.packageDebt(debtNumber);
         }
         // 初始化状态
         asset.setState(1);

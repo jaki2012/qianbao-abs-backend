@@ -2,7 +2,6 @@ package com.qianbao.controller;
 
 import com.qianbao.common.sys.Result;
 import com.qianbao.common.sys.Constants;
-import com.qianbao.common.sys.SysProperties;
 import com.qianbao.common.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 
 @RestController
-@RequestMapping(SysProperties.API_VERSION_URLPATH)
+@RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
@@ -41,6 +40,7 @@ public class AuthController {
             // 验证
             Authentication auth = authenticationManager.authenticate(authRequest);
             SecurityContextHolder.getContext().setAuthentication(auth);
+            request.getSession().setMaxInactiveInterval(60 * 30);
             return ResultUtil.success(Constants.USER_LOGIN_SUCCESS);
         } catch (AuthenticationException e) {
             return ResultUtil.error(403,Constants.USER_LOGIN_FAILED);

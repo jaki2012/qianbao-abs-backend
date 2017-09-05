@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface AssetService {
 
-    int generateAsset(String[] debtsIDs, Asset asset);
+    int generateAsset(String[] debtsNumbers, Asset asset);
 
     List<Asset> findAssets(int userID);
 }

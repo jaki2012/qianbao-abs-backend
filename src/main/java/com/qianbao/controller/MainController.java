@@ -1,5 +1,6 @@
 package com.qianbao.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.qianbao.common.sys.Result;
 import com.qianbao.common.sys.SysProperties;
 import com.qianbao.common.util.ResultUtil;
@@ -21,7 +22,6 @@ import java.util.Map;
  * @description abs主要业务controller分发器
  */
 @RestController
-@RequestMapping(SysProperties.API_VERSION_URLPATH)
 public class MainController {
 
     @Autowired
@@ -30,16 +30,32 @@ public class MainController {
     @Autowired
     private AssetService assetService;
 
-    @RequestMapping(value = "/debts", method = RequestMethod.GET)
-    public Result acquireDebts(@RequestParam("page")int page, @RequestParam("length")int length){
-        List<Debt> debts = debtService.acquireDebts(page, length);
-        return ResultUtil.success(debts);
+    @RequestMapping(value = "/allunrevieweddebts/", method = RequestMethod.GET)
+    public Result initialDebtsPool(@RequestParam("page")int page, @RequestParam("length")int length) {
+        JSONObject result = debtService.getUnreviewdDebts(page, length);
+        return ResultUtil.success(result);
+    }
+
+    @RequestMapping(value = "/alldebts/", method = RequestMethod.GET)
+    public Result queryDebts(@RequestParam("page")int page, @RequestParam("length")int length) {
+        JSONObject result = debtService.getAllDebts(page, length);
+        return ResultUtil.success(result);
+    }
+
+    @RequestMapping(value = "/newdebts", method = RequestMethod.GET)
+    public Result acquireDebts(@RequestParam("number")int number){
+        List<Debt> debts = debtService.acquireDebts(number);
+        if(null == debts) {
+            return ResultUtil.error(400,"每次获取债权数量不得大于1000");
+        } else {
+            return ResultUtil.success(debts);
+        }
     }
 
     @RequestMapping(value = "/asset", method = RequestMethod.POST)
-    public Result packageDebts(@RequestParam("debtsIDs") String [] debtsIDs, @RequestBody Asset asset){
-        if(0 == assetService.generateAsset(debtsIDs, asset))
-            return ResultUtil.success(debtsIDs[0]);
+    public Result packageDebts(@RequestParam("debtsNumbers") String [] debtsNumbers, @RequestBody Asset asset){
+        if(0 == assetService.generateAsset(debtsNumbers, asset))
+            return ResultUtil.success("打包成功！");
         else
             return ResultUtil.error(400, "债权打包金额不符合要求");
     }
@@ -47,9 +63,9 @@ public class MainController {
     @PatchMapping(value = "/debt")
     public Result returnDebt(@RequestBody Map<String,String> requestParams) {
         String state = requestParams.get("state");
-        String debtID = requestParams.get("debtID");
-        if(null != state && state.equals("已退回") && null != debtID){
-            int result = debtService.returnDebt(requestParams.get("debtID"));
+        String debtNumber = requestParams.get("debtNumber");
+        if(null != state && state.equals("已退回") && null != debtNumber){
+            int result = debtService.returnDebt(requestParams.get("debtNumber"));
             if(1 == result) {
                 return ResultUtil.success();
             } else {
@@ -66,7 +82,7 @@ public class MainController {
         return ResultUtil.success(user);
     }
 
-    @GetMapping(value = "/assets")
+    @GetMapping(value = "/allassets")
     public Result manageAssets(){
         SecurityUser user = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int userID = user.getUserID();

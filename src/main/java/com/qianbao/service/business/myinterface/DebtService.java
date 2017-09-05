@@ -1,5 +1,6 @@
 package com.qianbao.service.business.myinterface;
 
+import com.alibaba.fastjson.JSONObject;
 import com.qianbao.domain.Debt;
 
 import java.util.List;
@@ -12,24 +13,40 @@ import java.util.List;
 public interface DebtService {
 
     /**
-     * 获取债权
-     * @param page 第几页
-     * @param length 页面长度
+     * 从债权池中获取-待审核-的债权
+     * @param page
+     * @param length
      * @return
      */
-    List<Debt> acquireDebts(int page, int length);
+    JSONObject getUnreviewdDebts(int page, int length);
+
+    /**
+     * 从债权池中获取所有债权
+     * @param page
+     * @param length
+     * @return
+     */
+    JSONObject getAllDebts(int page, int length);
+
+
+    /**
+     * 从外部获取债权
+     * @param number 要获取多少个
+     * @return
+     */
+    List<Debt> acquireDebts(int number);
 
     /**
      * 打包债权并将其状态变更为已打包
-     * @param debtID
+     * @param debtNumber
      * @return
      */
-    int packageDebt(String debtID);
+    int packageDebt(String debtNumber);
 
     /**
      * 退回债权并将其状态变更为已退回
-     * @param debtID
+     * @param debtNumber
      * @return
      */
-    int returnDebt(String debtID);
+    int returnDebt(String debtNumber);
 }
