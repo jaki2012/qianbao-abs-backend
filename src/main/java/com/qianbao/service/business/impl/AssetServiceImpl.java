@@ -65,7 +65,11 @@ public class AssetServiceImpl implements AssetService{
     @Override
     public List<Asset> findAssets(int userID) {
         int roleID = userMapper.getRoleIDByUserID(userID);
-        List<Asset> assets = assetMapper.findByRoleID(roleID);
+        // 如果是管理员的话则可以看到所有资产
+        if(roleID == 1) {
+            return assetMapper.findAll();
+        }
+        List<Asset> assets = assetMapper.findByUserID(userID);
         return assets;
     }
 

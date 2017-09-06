@@ -58,4 +58,14 @@
         SELECT * FROM tbAsset
         WHERE assetID = #{assetID}
     </select>
+
+    <select id="findAll" resultType="com.qianbao.domain.Asset">
+        SELECT * FROM tbAsset
+    </select>
+
+    <select id="findByUserID" parameterType="int" resultType="com.qianbao.domain.Asset">
+        SELECT * FROM tbAsset a
+        LEFT JOIN tbUser_Asset b on a.assetID = b.assetID
+        WHERE b.userID = #{userID}
+    </select>
 </mapper>

@@ -78,6 +78,7 @@ public class MainController {
 
     @GetMapping(value = "/allassets")
     public Result manageAssets(){
+        // 用户只能看到其所参与的资产
         SecurityUser user = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int userID = user.getUserID();
         List<Asset> assets = assetService.findAssets(userID);
