@@ -53,4 +53,9 @@
         LEFT JOIN tbRole_Asset b on a.state = b.state
         WHERE b.roleID = #{roleID};
     </select>
+
+    <select id="findOneByAssetID" parameterType="int" resultType="com.qianbao.domain.Asset">
+        SELECT * FROM tbAsset
+        WHERE assetID = #{assetID}
+    </select>
 </mapper>

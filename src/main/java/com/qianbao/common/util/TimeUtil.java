@@ -5,7 +5,7 @@ import java.util.Calendar;
 /**
  * @author lijiechu
  * @create on 17/9/4
- * @description
+ * @description 日期、时间编码等相关工具类
  */
 public class TimeUtil {
 

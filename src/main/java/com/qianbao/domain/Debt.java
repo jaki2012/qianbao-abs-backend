@@ -2,6 +2,7 @@ package com.qianbao.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.validation.constraints.Min;
 import java.util.Date;
 
 /**
@@ -19,6 +20,7 @@ public class Debt {
     // 借款编号
     private String loanNumber;
     // 借款金额
+    @Min(value = 0, message = "借款金额必须大于等于0")
     private int loanMoney;
     // 借款利率
     private float loanRate;

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 /**
  * @author lijiechu
  * @create on 17/9/4
- * @description
+ * @description 流水号生成服务实现类
  */
 @Service
 public class SerialNumberServiceImpl implements SerialNumberService {
@@ -23,7 +23,8 @@ public class SerialNumberServiceImpl implements SerialNumberService {
         // 获取今天的日期
         String dateStr = TimeUtil.getToday();
         // 构造redis的key
-        String redisKey = SERIAL_NUMBER + dateStr;
+        // 添加bizCode以避免不同业务之间的流水单号共用
+        String redisKey = bizCode + SERIAL_NUMBER + dateStr;
         long sequence  = redisDao.incr(redisKey);
         StringBuilder serialNumberBuilder = new StringBuilder();
         serialNumberBuilder.append(bizCode).append(dateStr).append(StringUtil.fillStringWillZeroes("" + sequence));

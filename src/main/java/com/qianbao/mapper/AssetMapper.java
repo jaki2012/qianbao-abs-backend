@@ -15,7 +15,10 @@ import java.util.List;
 @Repository
 @Mapper
 public interface AssetMapper {
+
     int insert(Asset asset);
 
     List<Asset> findByRoleID(@Param("roleID") int roleID);
+
+    Asset findOneByAssetID(@Param("assetID") int assetID);
 }

@@ -76,18 +76,17 @@ public class MainController {
         }
     }
 
-    @GetMapping(value = "/test")
-    public Result test(){
-        SecurityUser user = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return ResultUtil.success(user);
-    }
-
     @GetMapping(value = "/allassets")
     public Result manageAssets(){
         SecurityUser user = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int userID = user.getUserID();
         List<Asset> assets = assetService.findAssets(userID);
         return ResultUtil.success(assets);
+    }
+
+    @GetMapping(value = "/initialOptions")
+    public Result getInitialOptions(){
+        return ResultUtil.success(assetService.getInitialOptions());
     }
 
 }

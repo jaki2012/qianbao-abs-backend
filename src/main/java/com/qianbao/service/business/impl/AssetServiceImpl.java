@@ -1,7 +1,10 @@
 package com.qianbao.service.business.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.qianbao.domain.Asset;
 import com.qianbao.mapper.AssetMapper;
+import com.qianbao.mapper.CompanyMapper;
+import com.qianbao.mapper.RateSettingMapper;
 import com.qianbao.mapper.UserMapper;
 import com.qianbao.service.business.myinterface.AssetService;
 import com.qianbao.service.business.myinterface.DebtService;
@@ -26,6 +29,12 @@ public class AssetServiceImpl implements AssetService{
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private RateSettingMapper rateSettingMapper;
+
+    @Autowired
+    private CompanyMapper companyMapper;
 
     @Autowired
     private DebtService debtService;
@@ -60,5 +69,97 @@ public class AssetServiceImpl implements AssetService{
         return assets;
     }
 
+    @Override
+    public int generateSaleAgreement(int assetID) {
+        Asset asset = assetMapper.findOneByAssetID(assetID);
+        asset.setState(2);
+        return 0;
+    }
 
+    @Override
+    public int generateGuaranteeAgreement(int assetID) {
+        Asset asset = assetMapper.findOneByAssetID(assetID);
+        asset.setState(3);
+        return 0;
+    }
+
+    @Override
+    public int generateProductDesignAgreement(int assetID) {
+        Asset asset = assetMapper.findOneByAssetID(assetID);
+        asset.setState(4);
+        return 0;
+    }
+
+    @Override
+    public int generateAssetRatingInstruction(int assetID) {
+        Asset asset = assetMapper.findOneByAssetID(assetID);
+        asset.setState(5);
+        return 0;
+    }
+
+    @Override
+    public int generateAccountOpinion(int assetID) {
+        Asset asset = assetMapper.findOneByAssetID(assetID);
+        asset.setState(6);
+        return 0;
+    }
+
+    @Override
+    public int generateLegalOpinion(int assetID) {
+        Asset asset = assetMapper.findOneByAssetID(assetID);
+        asset.setState(7);
+        return 0;
+    }
+
+    @Override
+    public int generateProductPlanInstruction(int assetID) {
+        Asset asset = assetMapper.findOneByAssetID(assetID);
+        asset.setState(8);
+        return 0;
+    }
+
+    @Override
+    public int generatePosteriorSubscription(int assetID) {
+        Asset asset = assetMapper.findOneByAssetID(assetID);
+        asset.setState(9);
+        return 0;
+    }
+
+    @Override
+    public int generateSubPosteriorSubscription(int assetID) {
+        Asset asset = assetMapper.findOneByAssetID(assetID);
+        asset.setState(10);
+        return 0;
+    }
+
+    @Override
+    @Transactional
+    public int generatePriorSubscription(int assetID) {
+        Asset asset = assetMapper.findOneByAssetID(assetID);
+        asset.setState(11);
+        // 当状态值为11，智能合约向银行发出分账指令
+        this.bankCredit(assetID);
+        return 0;
+    }
+
+    @Override
+    public int bankCredit(int assetID) {
+        Asset asset = assetMapper.findOneByAssetID(assetID);
+        // 状态已完成
+        asset.setState(12);
+        return 0;
+    }
+
+    @Override
+    public JSONObject getInitialOptions() {
+        JSONObject initialOptions = new JSONObject();
+        initialOptions.put("rateSetting", rateSettingMapper.findOne());
+        initialOptions.put("investors", companyMapper.findByType("投资方"));
+        initialOptions.put("spvs", companyMapper.findByType("信托机构"));
+        initialOptions.put("promisers", companyMapper.findByType("差额支付承诺人"));
+        initialOptions.put("ratingOrganisations", companyMapper.findByType("资产评级机构"));
+        initialOptions.put("accountantFirms", companyMapper.findByType("会计师事务所"));
+        initialOptions.put("lawFirms", companyMapper.findByType("律师事务所"));
+        return initialOptions;
+    }
 }
