@@ -1,6 +1,7 @@
 package com.qianbao.mapper;
 
 import com.qianbao.domain.Asset;
+import com.qianbao.domain.AssetWrapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -35,4 +36,10 @@ public interface AssetMapper {
      * @return
      */
     List<Asset> findByUserID(int userID);
+
+    AssetWrapper findWrapperInfo(@Param("roleID") int roleID, @Param("state") int state);
+
+    int update(Asset asset);
+
+    int recordDebts(@Param("debtNumbers") String[] debtNumbers, @Param("assetID") int assetID);
 }

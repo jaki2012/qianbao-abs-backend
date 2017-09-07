@@ -1,9 +1,11 @@
 package com.qianbao.service.business.impl;
 
 import com.qianbao.common.sys.SysProperties;
+import com.qianbao.domain.ActionLog;
 import com.qianbao.domain.Company;
 import com.qianbao.domain.User;
 import com.qianbao.domain.UserWrapper;
+import com.qianbao.mapper.ActionLogMapper;
 import com.qianbao.mapper.CompanyMapper;
 import com.qianbao.mapper.RoleMapper;
 import com.qianbao.mapper.UserMapper;
@@ -32,6 +34,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RoleMapper roleMapper;
+
+    @Autowired
+    private ActionLogMapper actionLogMapper;
 
     @Override
     @Transactional
@@ -78,8 +83,10 @@ public class UserServiceImpl implements UserService {
             Company company = companyMapper.findByCompanyID(user.getCompanyID());
 
             UserWrapper userWrapper = new UserWrapper();
+            userWrapper.setUserID(user.getUserID());
             userWrapper.setAccount(user.getAccount());
             userWrapper.setUsername(user.getUsername());
+            userWrapper.setCreateTime(user.getCreateTime());
             userWrapper.setCompanyName(company.getCompanyName());
             userWrapper.setCompanyType(company.getCompanyType());
 
@@ -87,5 +94,10 @@ public class UserServiceImpl implements UserService {
         }
 
         return userWrappers;
+    }
+
+    @Override
+    public List<ActionLog> getActionLogs(int userID) {
+        return actionLogMapper.findByUserID(userID);
     }
 }

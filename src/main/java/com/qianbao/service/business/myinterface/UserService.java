@@ -1,7 +1,9 @@
 package com.qianbao.service.business.myinterface;
 
+import com.qianbao.domain.ActionLog;
 import com.qianbao.domain.UserWrapper;
 
+import javax.swing.*;
 import java.util.List;
 
 /**
@@ -23,4 +25,12 @@ public interface UserService {
      * @return
      */
     List<UserWrapper> getAllUsers();
+
+    /**
+     * 获取用户的操作日志
+     * @param userID
+     * @return
+     */
+    List<ActionLog> getActionLogs(int userID);
+
 }

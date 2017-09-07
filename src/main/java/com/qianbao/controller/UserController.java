@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.*;
  */
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @PostMapping("/")
+    @PostMapping("")
     public Result createUser(@RequestBody UserWrapper userWrapper){
         Result result = ResultUtil.success();
         userService.createUser(userWrapper);
@@ -28,9 +28,14 @@ public class UserController {
         return result;
     }
 
-    @GetMapping("/all")
+    @GetMapping("")
     public Result getAllUsers(){
         return ResultUtil.success(userService.getAllUsers());
+    }
+
+    @GetMapping("/actionLogs")
+    public Result getActionLogs(@RequestParam("userID")int userID){
+        return ResultUtil.success(userService.getActionLogs(userID));
     }
 
 }

@@ -2,6 +2,8 @@ package com.qianbao.service.business.myinterface;
 
 import com.alibaba.fastjson.JSONObject;
 import com.qianbao.domain.Asset;
+import com.qianbao.domain.AssetCreationWrapper;
+import com.qianbao.domain.AssetWrapper;
 
 import java.util.List;
 
@@ -14,13 +16,12 @@ public interface AssetService {
 
     /**
      * 打包资产
-     * @param debtsNumbers 资产所包含的债权列表
-     * @param asset 生成的资产
+     * @param assetCreationWrapper 生成的资产封装类
      * @return
      */
-    int generateAsset(String[] debtsNumbers, Asset asset);
+    int generateAsset(AssetCreationWrapper assetCreationWrapper);
 
-    List<Asset> findAssets(int userID);
+    List<AssetWrapper> findAssets(int userID);
 
     /**
      * 生成债权买卖协议

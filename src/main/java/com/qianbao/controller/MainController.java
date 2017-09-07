@@ -4,9 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.qianbao.common.sys.Result;
 import com.qianbao.common.sys.SysProperties;
 import com.qianbao.common.util.ResultUtil;
-import com.qianbao.domain.Asset;
-import com.qianbao.domain.Debt;
-import com.qianbao.domain.SecurityUser;
+import com.qianbao.domain.*;
 import com.qianbao.service.business.myinterface.AssetService;
 import com.qianbao.service.business.myinterface.DebtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +28,13 @@ public class MainController {
     @Autowired
     private AssetService assetService;
 
-    @RequestMapping(value = "/allunrevieweddebts/", method = RequestMethod.GET)
+    @RequestMapping(value = "/allunrevieweddebts", method = RequestMethod.GET)
     public Result initialDebtsPool(@RequestParam("page")int page, @RequestParam("length")int length) {
         JSONObject result = debtService.getUnreviewdDebts(page, length);
         return ResultUtil.success(result);
     }
 
-    @RequestMapping(value = "/alldebts/", method = RequestMethod.GET)
+    @RequestMapping(value = "/alldebts", method = RequestMethod.GET)
     public Result queryDebts(@RequestParam("page")int page, @RequestParam("length")int length) {
         JSONObject result = debtService.getAllDebts(page, length);
         return ResultUtil.success(result);
@@ -53,8 +51,8 @@ public class MainController {
     }
 
     @RequestMapping(value = "/asset", method = RequestMethod.POST)
-    public Result packageDebts(@RequestParam("debtsNumbers") String [] debtsNumbers, @RequestBody Asset asset){
-        if(0 == assetService.generateAsset(debtsNumbers, asset))
+    public Result packageDebts(@RequestBody AssetCreationWrapper assetCreationWrapper){
+        if(0 == assetService.generateAsset(assetCreationWrapper))
             return ResultUtil.success("打包成功！");
         else
             return ResultUtil.error(400, "债权打包金额不符合要求");
@@ -81,8 +79,8 @@ public class MainController {
         // 用户只能看到其所参与的资产
         SecurityUser user = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int userID = user.getUserID();
-        List<Asset> assets = assetService.findAssets(userID);
-        return ResultUtil.success(assets);
+        List<AssetWrapper> assetWrappers = assetService.findAssets(userID);
+        return ResultUtil.success(assetWrappers);
     }
 
     @GetMapping(value = "/initialOptions")

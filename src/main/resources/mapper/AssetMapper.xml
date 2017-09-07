@@ -3,6 +3,9 @@
 <mapper namespace="com.qianbao.mapper.AssetMapper">
 
     <insert id="insert" parameterType="com.qianbao.domain.Asset">
+        <selectKey keyProperty="assetID" resultType="int" order="AFTER" >
+            SELECT LAST_INSERT_ID()
+        </selectKey>
         INSERT INTO tbAsset(
         `assetNumber`,
         `productName`,
@@ -68,4 +71,29 @@
         LEFT JOIN tbUser_Asset b on a.assetID = b.assetID
         WHERE b.userID = #{userID}
     </select>
+
+    <select id="findWrapperInfo" resultType="com.qianbao.domain.AssetWrapper">
+        SELECT * FROM (
+          SELECT a.state, a.stateName, b.url, b.urlAlt FROM tbState_StateName a
+          LEFT JOIN tbRole_Asset b ON a.state = b.state
+          <if test="roleID != 1">
+          AND b.roleID = #{roleID}
+          </if>
+        ) c WHERE c.state = #{state}
+    </select>
+
+    <update id="update">
+        UPDATE tbAsset
+        SET state = #{state}, modifyTime = #{modifyTime}
+        WHERE assetID = #{assetID}
+    </update>
+
+    <insert id="recordDebts">
+        INSERT INTO tbAsset_Debt
+        (assetID, debtNumber)
+        VALUES
+        <foreach collection="debtNumbers" item="item"  separator=",">
+        (#{assetID}, #{item})
+        </foreach>
+    </insert>
 </mapper>

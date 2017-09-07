@@ -1,11 +1,17 @@
 package com.qianbao.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.Date;
+
 /**
  * @author lijiechu
  * @create on 17/9/6
  * @description User包装类，用于适配前端请求创建的用户对象
  */
 public class UserWrapper {
+
+    int userID;
 
     private String companyName;
 
@@ -14,6 +20,17 @@ public class UserWrapper {
     private String account;
 
     private String username;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd", timezone = "GMT+8")
+    private Date createTime;
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
 
     public String getCompanyName() {
         return companyName;
@@ -45,5 +62,13 @@ public class UserWrapper {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }
