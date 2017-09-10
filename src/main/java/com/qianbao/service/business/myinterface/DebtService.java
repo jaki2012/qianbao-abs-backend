@@ -3,6 +3,7 @@ package com.qianbao.service.business.myinterface;
 import com.alibaba.fastjson.JSONObject;
 import com.qianbao.domain.Debt;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,12 +22,22 @@ public interface DebtService {
     JSONObject getUnreviewdDebts(int page, int length);
 
     /**
+     * 从债券池中获取-待审核-的债权（带日期）
+     * @param page
+     * @param length
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    JSONObject getUnreviewdDebts(int page, int length, Date startDate, Date endDate);
+
+    /**
      * 从债权池中获取所有债权
      * @param page
      * @param length
      * @return
      */
-    JSONObject getAllDebts(int page, int length);
+    JSONObject getAllDebts(int page, int length, Date startDate, Date endDate);
 
 
     /**

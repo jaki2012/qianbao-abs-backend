@@ -1,14 +1,10 @@
 package com.qianbao.service.business.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.qianbao.common.util.JsonUtil;
-import com.qianbao.domain.Asset;
-import com.qianbao.domain.AssetCreationWrapper;
-import com.qianbao.domain.AssetWrapper;
-import com.qianbao.mapper.AssetMapper;
-import com.qianbao.mapper.CompanyMapper;
-import com.qianbao.mapper.RateSettingMapper;
-import com.qianbao.mapper.UserMapper;
+import com.qianbao.domain.*;
+import com.qianbao.mapper.*;
 import com.qianbao.service.business.myinterface.AssetService;
 import com.qianbao.service.business.myinterface.DebtService;
 import com.qianbao.service.business.myinterface.SerialNumberService;
@@ -16,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,6 +41,12 @@ public class AssetServiceImpl implements AssetService{
     private CompanyMapper companyMapper;
 
     @Autowired
+    private DebtMapper debtMapper;
+
+    @Autowired
+    private TxRecordMapper txRecordMapper;
+
+    @Autowired
     private DebtService debtService;
 
     @Autowired
@@ -53,7 +58,7 @@ public class AssetServiceImpl implements AssetService{
 //        if(asset.getBasicAsset() < 4000000000l) {
 //            return 1;
 //        }
-        String[] debtsNumbers = assetCreationWrapper.getDebtNumbers();
+        String[] debtsNumbers = assetCreationWrapper.getDebtsNumbers();
         // 强制转换
         Asset asset =  assetCreationWrapper;
         for(String debtNumber : debtsNumbers){
@@ -70,6 +75,8 @@ public class AssetServiceImpl implements AssetService{
         // 刚刚插入的asset
         int assetID = asset.getAssetID();
         assetMapper.recordDebts(debtsNumbers, assetID);
+
+        assetMapper.recordExtraInfo(assetCreationWrapper);
         return 0;
     }
 
@@ -90,12 +97,12 @@ public class AssetServiceImpl implements AssetService{
             AssetWrapper assetWrapper = assetMapper.findWrapperInfo(roleID, asset.getState());
             assetWrapper.fillAssetInfo(asset);
             //是否可以执行
+            StringBuilder adjustedUrl = new StringBuilder();
             String url = assetWrapper.getUrl();
             boolean executable = (null != url);
             if(executable) {
-                url += "/";
-                url += assetWrapper.getAssetID();
-                assetWrapper.setUrl(url);
+                adjustedUrl.append("/asset/").append(assetWrapper.getAssetID()).append(url);
+                assetWrapper.setUrl(adjustedUrl.toString());
             }
             assetWrapper.setExecutable(executable);
             assetWrappers.add(assetWrapper);
@@ -217,5 +224,43 @@ public class AssetServiceImpl implements AssetService{
         initialOptions.put("accountantFirms", JsonUtil.addKeyForList(companyMapper.findByType("会计师事务所"),"name"));
         initialOptions.put("lawFirms", JsonUtil.addKeyForList(companyMapper.findByType("律师事务所"),"name"));
         return initialOptions;
+    }
+
+    @Override
+    public List<TxRecord> getTxRecords() {
+        return txRecordMapper.findAll();
+    }
+
+    @Override
+    public AssetQueryWrapper getAssetDetail(int assetID) {
+        return assetMapper.getByAssetID(assetID);
+    }
+
+    @Override
+    public void downloadDebtsInfo(int assetID, HttpServletResponse response) {
+       List<Debt> debts = debtMapper.findByAssetID(assetID);
+       String debtsStr = JSON.toJSONString(debts);
+       OutputStream out = null;
+       byte[] bytes = debtsStr.getBytes();
+
+        try {
+            response.reset();
+            response.setContentType("application/octet-stream; charset=utf-8");
+            // 解决中文乱码问题
+            response.setHeader("Content-Disposition", "debtsInfo; filename=" + new String(("asset"+assetID+"_debtsInfo.txt").getBytes("gbk"),"iso-8859-1"));
+            out = response.getOutputStream();
+            out.write(bytes);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if(null != out) {
+                try {
+                    out.close();
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

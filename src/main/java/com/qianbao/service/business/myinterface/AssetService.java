@@ -1,10 +1,9 @@
 package com.qianbao.service.business.myinterface;
 
 import com.alibaba.fastjson.JSONObject;
-import com.qianbao.domain.Asset;
-import com.qianbao.domain.AssetCreationWrapper;
-import com.qianbao.domain.AssetWrapper;
+import com.qianbao.domain.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -105,4 +104,22 @@ public interface AssetService {
      * @return 各个特邀用户
      */
     JSONObject getInitialOptions();
+
+    /**
+     * 获取交易记录日志
+     * @return
+     */
+    List<TxRecord> getTxRecords();
+
+    /**
+     * 查询资产详情
+     * @param assetID
+     * @return
+     */
+    AssetQueryWrapper getAssetDetail(int assetID);
+
+    /**
+     * 返回债权资料
+     */
+    void downloadDebtsInfo(int assetID, HttpServletResponse response);
 }

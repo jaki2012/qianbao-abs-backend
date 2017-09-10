@@ -37,11 +37,21 @@ public class DebtServiceImpl implements DebtService  {
     }
 
     @Override
-    public JSONObject getAllDebts(int page, int length) {
+    public JSONObject getUnreviewdDebts(int page, int length, Date startDate, Date endDate) {
         JSONObject result = new JSONObject();
         int start = (page-1) * length;
-        List<Debt> debts = debtMapper.findAllByPage(start, length);
-        result.put("total", debtMapper.findAll().size());
+        List<Debt> debts = debtMapper.findUnreviewdByPageAndDate(start, length,startDate, endDate);
+        result.put("total", debtMapper.findAllUnreviewdByDate(startDate, endDate).size());
+        result.put("debts", debts);
+        return result;
+    }
+
+    @Override
+    public JSONObject getAllDebts(int page, int length, Date startDate, Date endDate) {
+        JSONObject result = new JSONObject();
+        int start = (page-1) * length;
+        List<Debt> debts = debtMapper.findAllByPage(start, length,startDate, endDate);
+        result.put("total", debtMapper.findAll(startDate,endDate).size());
         result.put("debts", debts);
         return result;
     }

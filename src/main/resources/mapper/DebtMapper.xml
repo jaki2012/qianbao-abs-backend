@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qianbao.mapper.DebtMapper">
+
+    <select id="findUnreviewdByPageAndDate" resultType="com.qianbao.domain.Debt">
+        SELECT * FROM tbDebt
+        <where>
+            state = "待审核"
+            <if test="startDate != null">
+                AND createTime >= #{startDate}
+            </if>
+            <if test="endDate != null">
+                AND createTime &lt;= #{endDate}
+            </if>
+        </where>
+        LIMIT #{start}, #{length}
+    </select>
+
+    <select id="findAllUnreviewdByDate" resultType="com.qianbao.domain.Debt">
+        SELECT * FROM tbDebt
+        <where>
+            state = "待审核"
+            <if test="startDate != null">
+                AND createTime >= #{startDate}
+            </if>
+            <if test="endDate != null">
+                AND createTime &lt;= #{endDate}
+            </if>
+        </where>
+    </select>
+
+    <select id="findAllByPage" resultType="com.qianbao.domain.Debt">
+        SELECT * FROM tbDebt
+        <where>
+            state = "待审核"
+            <if test="startDate != null">
+                AND createTime >= #{startDate}
+            </if>
+            <if test="endDate != null">
+                AND createTime &lt;= #{endDate}
+            </if>
+        </where>
+        LIMIT #{start}, #{length}
+    </select>
+
+    <select id="findAll" resultType="com.qianbao.domain.Debt">
+        SELECT * FROM tbDebt
+        <where>
+            state = "待审核"
+            <if test="startDate != null">
+                AND createTime >= #{startDate}
+            </if>
+            <if test="endDate != null">
+                AND createTime &lt;= #{endDate}
+            </if>
+        </where>
+    </select>
+
+</mapper>

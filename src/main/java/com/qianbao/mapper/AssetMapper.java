@@ -1,6 +1,8 @@
 package com.qianbao.mapper;
 
 import com.qianbao.domain.Asset;
+import com.qianbao.domain.AssetCreationWrapper;
+import com.qianbao.domain.AssetQueryWrapper;
 import com.qianbao.domain.AssetWrapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -41,5 +43,9 @@ public interface AssetMapper {
 
     int update(Asset asset);
 
-    int recordDebts(@Param("debtNumbers") String[] debtNumbers, @Param("assetID") int assetID);
+    int recordDebts(@Param("debtsNumbers") String[] debtsNumbers, @Param("assetID") int assetID);
+
+    int recordExtraInfo(AssetCreationWrapper assetCreationWrapper);
+
+    AssetQueryWrapper getByAssetID(@Param("assetID") int assetID);
 }

@@ -8,9 +8,12 @@ import com.qianbao.domain.*;
 import com.qianbao.service.business.myinterface.AssetService;
 import com.qianbao.service.business.myinterface.DebtService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -29,14 +32,23 @@ public class MainController {
     private AssetService assetService;
 
     @RequestMapping(value = "/allunrevieweddebts", method = RequestMethod.GET)
-    public Result initialDebtsPool(@RequestParam("page")int page, @RequestParam("length")int length) {
-        JSONObject result = debtService.getUnreviewdDebts(page, length);
+    public Result initialDebtsPool(@RequestParam(value = "startDate", required = false) @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")Date startDate,
+                                   @RequestParam(value = "endDate",required = false) @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") Date endDate,
+                                   @RequestParam("page")int page, @RequestParam("length")int length) {
+
+        JSONObject result;
+        if(null != startDate || null != endDate) {
+            result = debtService.getUnreviewdDebts(page, length, startDate, endDate);
+        } else {
+            result = debtService.getUnreviewdDebts(page, length);
+        }
         return ResultUtil.success(result);
     }
 
     @RequestMapping(value = "/alldebts", method = RequestMethod.GET)
-    public Result queryDebts(@RequestParam("page")int page, @RequestParam("length")int length) {
-        JSONObject result = debtService.getAllDebts(page, length);
+    public Result queryDebts(@RequestParam(value = "startDate", required = false) @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") Date startDate,
+                             @RequestParam(value = "endDate", required = false)@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") Date endDate, @RequestParam("page")int page, @RequestParam("length")int length) {
+        JSONObject result = debtService.getAllDebts(page, length, startDate, endDate);
         return ResultUtil.success(result);
     }
 
@@ -75,11 +87,28 @@ public class MainController {
     }
 
     @GetMapping(value = "/allassets")
-    public Result manageAssets(){
+    public Result manageAssets(@RequestParam(value = "startDate", required = false) @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") Date startDate,
+                               @RequestParam(value = "endDate", required = false)@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") Date endDate){
         // 用户只能看到其所参与的资产
         SecurityUser user = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int userID = user.getUserID();
         List<AssetWrapper> assetWrappers = assetService.findAssets(userID);
+        Iterator<AssetWrapper> iterator = assetWrappers.iterator();
+        while(iterator.hasNext()) {
+            AssetWrapper assetWrapper = iterator.next();
+           if(startDate!= null) {
+               int compareResult = assetWrapper.getCreateTime().compareTo(startDate);
+               if(-1 == compareResult) {
+                   iterator.remove();
+               }
+           }
+           if(endDate != null) {
+               int compareResult = endDate.compareTo(assetWrapper.getCreateTime());
+               if(-1 == compareResult) {
+                   iterator.remove();
+               }
+           }
+        }
         return ResultUtil.success(assetWrappers);
     }
 

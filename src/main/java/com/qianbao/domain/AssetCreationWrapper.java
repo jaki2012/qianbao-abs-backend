@@ -7,13 +7,53 @@ package com.qianbao.domain;
  */
 public class AssetCreationWrapper extends Asset {
 
-    private String[] debtNumbers;
+    private String[] debtsNumbers;
 
-    public String[] getDebtNumbers() {
-        return debtNumbers;
+    private int ratingRate;
+
+    private int lawyerMoney;
+
+    private int spvRate;
+
+    private int accountantMoney;
+
+    public String[] getDebtsNumbers() {
+        return debtsNumbers;
     }
 
-    public void setDebtNumbers(String[] debtNumbers) {
-        this.debtNumbers = debtNumbers;
+    public void setDebtsNumbers(String[] debtsNumbers) {
+        this.debtsNumbers = debtsNumbers;
+    }
+
+    public int getLawyerMoney() {
+        return lawyerMoney;
+    }
+
+    public void setLawyerMoney(int lawyerMoney) {
+        this.lawyerMoney = lawyerMoney;
+    }
+
+    public int getAccountantMoney() {
+        return accountantMoney;
+    }
+
+    public void setAccountantMoney(int accountantMoney) {
+        this.accountantMoney = accountantMoney;
+    }
+
+    public int getRatingRate() {
+        return ratingRate;
+    }
+
+    public void setRatingRate(int ratingRate) {
+        this.ratingRate = ratingRate;
+    }
+
+    public int getSpvRate() {
+        return spvRate;
+    }
+
+    public void setSpvRate(int spvRate) {
+        this.spvRate = spvRate;
     }
 }

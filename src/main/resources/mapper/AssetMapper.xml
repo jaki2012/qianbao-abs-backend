@@ -64,12 +64,14 @@
 
     <select id="findAll" resultType="com.qianbao.domain.Asset">
         SELECT * FROM tbAsset
+        ORDER BY createTime DESC
     </select>
 
     <select id="findByUserID" parameterType="int" resultType="com.qianbao.domain.Asset">
         SELECT * FROM tbAsset a
         LEFT JOIN tbUser_Asset b on a.assetID = b.assetID
         WHERE b.userID = #{userID}
+        ORDER BY createTime DESC
     </select>
 
     <select id="findWrapperInfo" resultType="com.qianbao.domain.AssetWrapper">
@@ -92,8 +94,21 @@
         INSERT INTO tbAsset_Debt
         (assetID, debtNumber)
         VALUES
-        <foreach collection="debtNumbers" item="item"  separator=",">
+        <foreach collection="debtsNumbers" item="item"  separator=",">
         (#{assetID}, #{item})
         </foreach>
     </insert>
+
+    <insert id="recordExtraInfo">
+        INSERT INTO tbAssetExtra
+        (assetID, ratingMoney, lawyerMoney, spvMoney, accountantMoney)
+        VALUES
+        (#{assetID}, #{ratingRate} /1000 * #{basicAsset}, #{lawyerMoney}, #{spvRate} /1000 * #{basicAsset}, #{accountantMoney})
+    </insert>
+
+    <select id="getByAssetID" parameterType="int" resultType="com.qianbao.domain.AssetQueryWrapper">
+        SELECT a.*, b.ratingMoney, b.lawyerMoney, b.spvMoney, b.accountantMoney FROM tbAsset a
+        LEFT JOIN tbAssetExtra b on a.assetID = b.assetID
+        WHERE a.assetID = #{assetID}
+    </select>
 </mapper>
