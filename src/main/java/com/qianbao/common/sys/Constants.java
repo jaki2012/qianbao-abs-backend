@@ -14,6 +14,8 @@ public class Constants {
      */
     public final static String USER_LOGIN_SUCCESS = "登录成功";
     public final static String USER_LOGIN_FAILED = "登录失败";
+    public final static String ACCESS_TOKEN_LACK = "缺少必备参数access_token";
+    public final static String ACCESS_TOKEN_WRONG = "token认证失败";
 
     /**
      * 登录token相关

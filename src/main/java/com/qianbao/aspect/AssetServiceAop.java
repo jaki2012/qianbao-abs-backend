@@ -1,8 +1,8 @@
 package com.qianbao.aspect;
 
 import com.qianbao.common.sys.Result;
-import com.qianbao.common.util.UserinfoUtil;
 import com.qianbao.domain.ActionLog;
+import com.qianbao.domain.User;
 import com.qianbao.mapper.ActionLogMapper;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -48,25 +48,25 @@ public class AssetServiceAop {
         System.out.println(joinPoint.getSignature().getName());
         ActionLog actionLog = new ActionLog();
         actionLog.setAction((String) result.getData());
-        actionLog.setUserID(UserinfoUtil.getUser().getUserID());
+        actionLog.setUserID(((User)joinPoint.getArgs()[0]).getUserID());
         actionLog.setCreateTime(new Date());
         actionLogMapper.insert(actionLog);
     }
 
     @AfterReturning(pointcut = "returnDebtPointCut()")
-    public void generateReturnDebtLog(){
+    public void generateReturnDebtLog(JoinPoint joinPoint){
         ActionLog actionLog = new ActionLog();
         actionLog.setAction("退回债权");
-        actionLog.setUserID(UserinfoUtil.getUser().getUserID());
+        actionLog.setUserID(((User)joinPoint.getArgs()[0]).getUserID());
         actionLog.setCreateTime(new Date());
         actionLogMapper.insert(actionLog);
     }
 
     @AfterReturning(pointcut = "packageDebtsPointCut()")
-    public void generatePackageDebtsLog(){
+    public void generatePackageDebtsLog(JoinPoint joinPoint){
         ActionLog actionLog = new ActionLog();
         actionLog.setAction("打包债权");
-        actionLog.setUserID(UserinfoUtil.getUser().getUserID());
+        actionLog.setUserID(((User)joinPoint.getArgs()[0]).getUserID());
         actionLog.setCreateTime(new Date());
         actionLogMapper.insert(actionLog);
     }

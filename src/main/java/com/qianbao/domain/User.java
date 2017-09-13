@@ -1,8 +1,5 @@
 package com.qianbao.domain;
 
-import org.springframework.security.core.GrantedAuthority;
-
-import java.util.Collection;
 import java.util.Date;
 
 /**

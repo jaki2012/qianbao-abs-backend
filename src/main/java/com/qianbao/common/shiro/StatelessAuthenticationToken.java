@@ -7,68 +7,45 @@ import java.util.Map;
 /**
  * @author lijiechu
  * @create on 17/9/12
- * @description 用于授权的Token对象：用户身份即用户名，凭证即客户端传入的消息摘要
+ * @description 用于授权的Token对象：可以增加字段提高安全性，例如时间戳、url签名
  */
 public class StatelessAuthenticationToken implements AuthenticationToken {
 
     private static final long serialVersionUID = 1L;
-    // 用户身份即用户名
-    private String username;
+    //用户id
+    private long userId;
 
-    // 客户端传入的密码
-    private String password;
+    //随机生成的uuid
+    private String token;
 
-    // 凭证即客户端传入的消息摘要。
-    private String clientDigest;
-
-
-    public StatelessAuthenticationToken() {
-
-    }
-
-    public StatelessAuthenticationToken(String username, String password, String clientDigest) {
-        this.username = username;
-        this.password = password;
-        this.clientDigest = clientDigest;
-    }
-
-    public StatelessAuthenticationToken(String username, String clientDigest) {
-        super();
-        this.username = username;
-        this.clientDigest = clientDigest;
+    public StatelessAuthenticationToken(long userId, String token){
+        this.userId = userId;
+        this.token = token;
     }
 
     @Override
     public Object getPrincipal() {
-        return username;
+        return userId;
     }
 
     @Override
     public Object getCredentials() {
-        return clientDigest;
+        return token;
     }
 
-    public String getUsername() {
-        return username;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
-    public String getPassword() {
-        return password;
+    public String getToken() {
+        return token;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getClientDigest() {
-        return clientDigest;
-    }
-
-    public void setClientDigest(String clientDigest) {
-        this.clientDigest = clientDigest;
+    public void setToken(String token) {
+        this.token = token;
     }
 }

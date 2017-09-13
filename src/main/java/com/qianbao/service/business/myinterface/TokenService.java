@@ -1,6 +1,6 @@
 package com.qianbao.service.business.myinterface;
 
-import com.qianbao.domain.Token;
+import com.qianbao.common.shiro.StatelessAuthenticationToken;
 
 /**
  * @author lijiechu
@@ -13,21 +13,21 @@ public interface TokenService {
      * @param userID 指定用户的id
      * @return 生成的token
      */
-    Token createToken(long userID);
+    StatelessAuthenticationToken createToken(long userID);
 
     /**
      * 检查token是否有效
      * @param model
      * @return 是否有效
      */
-    boolean checkToken(Token model);
+    boolean checkToken(StatelessAuthenticationToken model);
 
     /**
      * 从字符串中解析token
      * @param authentication 加密后的字符串
      * @return
      */
-    Token getToken(String authentication);
+    StatelessAuthenticationToken getToken(String authentication);
 
     /**
      * 清除token

@@ -1,6 +1,5 @@
 package com.qianbao.common.shiro;
 
-import com.qianbao.domain.Token;
 import com.qianbao.domain.User;
 import com.qianbao.mapper.UserMapper;
 import org.apache.shiro.authc.AuthenticationException;
@@ -26,16 +25,14 @@ public class StatelessAuthorizingRealm extends AuthorizingRealm {
     @Override
     public boolean supports(AuthenticationToken token) {
         // return token instanceof StatelessAuthenticationToken;
-        return token instanceof Token;
+        return token instanceof StatelessAuthenticationToken;
     }
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         //根据用户名查找角色，请根据需求实现
         long userID = (Long) principalCollection.getPrimaryPrincipal();
-
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-
         // 可以动态添加单个角色（权限）、多个角色（权限）
         authorizationInfo.addRole(userMapper.getRoleNameByUserID(userID));
         return authorizationInfo;
@@ -43,7 +40,7 @@ public class StatelessAuthorizingRealm extends AuthorizingRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        Token statelessToken = (Token)authenticationToken;
+        StatelessAuthenticationToken statelessToken = (StatelessAuthenticationToken)authenticationToken;
 
         long userID = (Long)statelessToken.getPrincipal();
 
@@ -52,7 +49,6 @@ public class StatelessAuthorizingRealm extends AuthorizingRealm {
         if(null == user){
             return null;
         }
-
         // 然后进行客户端消息摘要和服务器端消息摘要的匹配
         // TODO：添加时间戳或url签名后加密进行传输
         SimpleAuthenticationInfo  authenticationInfo = new SimpleAuthenticationInfo(

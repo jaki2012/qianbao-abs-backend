@@ -1,6 +1,7 @@
 package com.qianbao.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.qianbao.common.annotation.CurrentUser;
 import com.qianbao.common.sys.Result;
 import com.qianbao.common.sys.SysProperties;
 import com.qianbao.common.util.ResultUtil;
@@ -9,7 +10,6 @@ import com.qianbao.service.business.myinterface.AssetService;
 import com.qianbao.service.business.myinterface.DebtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -63,7 +63,7 @@ public class MainController {
     }
 
     @RequestMapping(value = "/asset", method = RequestMethod.POST)
-    public Result packageDebts(@RequestBody AssetCreationWrapper assetCreationWrapper){
+    public Result packageDebts(@CurrentUser User user, @RequestBody AssetCreationWrapper assetCreationWrapper){
         if(0 == assetService.generateAsset(assetCreationWrapper))
             return ResultUtil.success("打包成功！");
         else
@@ -71,7 +71,7 @@ public class MainController {
     }
 
     @PatchMapping(value = "/debt")
-    public Result returnDebt(@RequestBody Map<String,String> requestParams) {
+    public Result returnDebt(@CurrentUser User user, @RequestBody Map<String,String> requestParams) {
         String state = requestParams.get("state");
         String debtNumber = requestParams.get("debtNumber");
         if(null != state && state.equals("已退回") && null != debtNumber){
@@ -87,10 +87,9 @@ public class MainController {
     }
 
     @GetMapping(value = "/allassets")
-    public Result manageAssets(@RequestParam(value = "startDate", required = false) @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") Date startDate,
+    public Result manageAssets(@CurrentUser User user, @RequestParam(value = "startDate", required = false) @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") Date startDate,
                                @RequestParam(value = "endDate", required = false)@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") Date endDate){
         // 用户只能看到其所参与的资产
-        SecurityUser user = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int userID = user.getUserID();
         List<AssetWrapper> assetWrappers = assetService.findAssets(userID);
         Iterator<AssetWrapper> iterator = assetWrappers.iterator();
