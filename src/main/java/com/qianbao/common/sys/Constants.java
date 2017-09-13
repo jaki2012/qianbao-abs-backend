@@ -14,4 +14,9 @@ public class Constants {
      */
     public final static String USER_LOGIN_SUCCESS = "登录成功";
     public final static String USER_LOGIN_FAILED = "登录失败";
+
+    /**
+     * 登录token相关
+     */
+    public final static int TOKEN_EXPIRES_HOURS = 72;
 }

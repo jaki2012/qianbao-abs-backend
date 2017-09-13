@@ -1,6 +1,7 @@
 package com.qianbao.common.exception;
 
 import com.qianbao.common.sys.Result;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,6 +26,8 @@ public class GlobalExceptionHandler {
 
         if(e instanceof NoHandlerFoundException) {
             result.setCode(HttpServletResponse.SC_NOT_FOUND);
+        } else if(e instanceof UnauthorizedException){
+            result.setCode(HttpServletResponse.SC_FORBIDDEN);
         } else {
             result.setCode(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }

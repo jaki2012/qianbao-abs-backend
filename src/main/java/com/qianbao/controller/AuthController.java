@@ -1,21 +1,21 @@
 package com.qianbao.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.qianbao.common.annotation.Authorization;
+import com.qianbao.common.annotation.CurrentUser;
 import com.qianbao.common.sys.Result;
-import com.qianbao.common.sys.Constants;
 import com.qianbao.common.util.ResultUtil;
+import com.qianbao.domain.Token;
+import com.qianbao.domain.User;
+import com.qianbao.mapper.UserMapper;
+import com.qianbao.service.business.myinterface.TokenService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -29,21 +29,28 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthController {
 
     @Autowired
-    AuthenticationManager authenticationManager;
+    private UserMapper userMapper;
 
-    @RequestMapping(value="/login",method = RequestMethod.POST)
-    public Result login(HttpServletRequest request, HttpServletResponse response,
-                        @RequestParam("username")String username, @RequestParam("password") String password){
-        try {
-            // 内部登录请求
-            UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password, AuthorityUtils.commaSeparatedStringToAuthorityList(""));
-            // 验证
-            Authentication auth = authenticationManager.authenticate(authRequest);
-            SecurityContextHolder.getContext().setAuthentication(auth);
-            request.getSession().setMaxInactiveInterval(60 * 30);
-            return ResultUtil.success(Constants.USER_LOGIN_SUCCESS);
-        } catch (AuthenticationException e) {
-            return ResultUtil.error(403,Constants.USER_LOGIN_FAILED);
+    @Autowired
+    private TokenService tokenService;
+
+    @RequestMapping(value = "/login")
+    public Result login(@RequestParam String username, @RequestParam String password){
+        User user = userMapper.findByUsername(username);
+        if(null == user || !user.getPassword().equals(password)){
+            return ResultUtil.error(HttpServletResponse.SC_UNAUTHORIZED, "登录失败");
         }
+        Token model = tokenService.createToken(user.getUserID());
+        JSONObject result = new JSONObject();
+        result.put("access_token", model.getUserId() + "_" + model.getToken());
+        return ResultUtil.success(result);
     }
+
+    @RequiresRoles("ROLE_SPV")
+    @RequestMapping(value = "/logout")
+    public Result logout(@CurrentUser User user){
+        tokenService.deleteToken(user.getUserID());
+        return ResultUtil.success("用户" + user.getUsername() + "退出成功");
+    }
+
 }
