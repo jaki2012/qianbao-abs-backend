@@ -1,10 +1,10 @@
-package com.qianbao.service.business.impl;
+package com.qianbao.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.qianbao.domain.Debt;
 import com.qianbao.mapper.DebtMapper;
-import com.qianbao.service.business.myinterface.DebtService;
-import com.qianbao.service.business.myinterface.SerialNumberService;
+import com.qianbao.service.myinterface.DebtService;
+import com.qianbao.service.myinterface.SerialNumberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

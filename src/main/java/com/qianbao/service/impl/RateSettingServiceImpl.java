@@ -1,8 +1,8 @@
-package com.qianbao.service.business.impl;
+package com.qianbao.service.impl;
 
 import com.qianbao.domain.RateSetting;
 import com.qianbao.mapper.RateSettingMapper;
-import com.qianbao.service.business.myinterface.RateSettingService;
+import com.qianbao.service.myinterface.RateSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

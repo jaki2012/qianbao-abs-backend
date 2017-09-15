@@ -12,4 +12,7 @@ public class SysProperties {
     public static final String USER_DEFAULT_PASSWORD = "201709";
 
     public static final int USER_DEFAULT_SEX = 0;
+
+    public static final String BLOCKCHAIN_SDK_BASEURL = "http://localhost:4000/";
+
 }

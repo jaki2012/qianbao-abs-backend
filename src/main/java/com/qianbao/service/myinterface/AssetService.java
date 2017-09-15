@@ -1,4 +1,4 @@
-package com.qianbao.service.business.myinterface;
+package com.qianbao.service.myinterface;
 
 import com.alibaba.fastjson.JSONObject;
 import com.qianbao.domain.*;

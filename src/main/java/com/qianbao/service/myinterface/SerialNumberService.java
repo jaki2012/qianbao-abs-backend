@@ -1,4 +1,4 @@
-package com.qianbao.service.business.myinterface;
+package com.qianbao.service.myinterface;
 
 /**
  * @author lijiechu

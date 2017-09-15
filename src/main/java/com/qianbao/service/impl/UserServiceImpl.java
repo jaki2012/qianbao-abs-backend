@@ -1,4 +1,4 @@
-package com.qianbao.service.business.impl;
+package com.qianbao.service.impl;
 
 import com.qianbao.common.sys.SysProperties;
 import com.qianbao.domain.ActionLog;
@@ -9,7 +9,7 @@ import com.qianbao.mapper.ActionLogMapper;
 import com.qianbao.mapper.CompanyMapper;
 import com.qianbao.mapper.RoleMapper;
 import com.qianbao.mapper.UserMapper;
-import com.qianbao.service.business.myinterface.UserService;
+import com.qianbao.service.myinterface.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

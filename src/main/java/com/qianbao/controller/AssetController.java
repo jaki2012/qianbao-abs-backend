@@ -4,7 +4,7 @@ import com.qianbao.common.annotation.CurrentUser;
 import com.qianbao.common.sys.Result;
 import com.qianbao.common.util.ResultUtil;
 import com.qianbao.domain.User;
-import com.qianbao.service.business.myinterface.AssetService;
+import com.qianbao.service.myinterface.AssetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,13 +60,13 @@ public class AssetController {
 
         @PostMapping("/{assetID}/legalOpinion")
     public Result generateLegalOpinion(@CurrentUser User user, @PathVariable("assetID")int assetID){
-        assetService.generateAccountOpinion(assetID);
+        assetService.generateLegalOpinion(assetID);
         return ResultUtil.success("生成法律意见书成功");
     }
 
     @PostMapping("/{assetID}/productPlanInstruction")
     public Result generateProductPlanInstruction(@CurrentUser User user, @PathVariable("assetID")int assetID){
-        assetService.generateProductDesignAgreement(assetID);
+        assetService.generateProductPlanInstruction(assetID);
         return ResultUtil.success("生成资产计划说明书成功");
     }
 

@@ -1,8 +1,8 @@
-package com.qianbao.service.business.impl;
+package com.qianbao.service.impl;
 
 import com.qianbao.common.shiro.StatelessAuthenticationToken;
 import com.qianbao.common.sys.Constants;
-import com.qianbao.service.business.myinterface.TokenService;
+import com.qianbao.service.myinterface.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
  * @description 通过Redis缓存机制管理token生命周期的Impl类
  */
 @Service
-public class TokenServiceImpl implements TokenService{
+public class TokenServiceImpl implements TokenService {
 
     private RedisTemplate<Long, String> redis;
 

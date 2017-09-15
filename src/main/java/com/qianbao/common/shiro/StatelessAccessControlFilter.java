@@ -5,7 +5,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.qianbao.common.sys.Constants;
 import com.qianbao.common.sys.Result;
 import com.qianbao.common.util.ResultUtil;
-import com.qianbao.service.business.myinterface.TokenService;
+import com.qianbao.service.myinterface.TokenService;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 

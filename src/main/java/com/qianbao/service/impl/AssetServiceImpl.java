@@ -1,4 +1,4 @@
-package com.qianbao.service.business.impl;
+package com.qianbao.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -8,13 +8,14 @@ import com.qianbao.common.util.JsonUtil;
 import com.qianbao.common.util.UserinfoUtil;
 import com.qianbao.domain.*;
 import com.qianbao.mapper.*;
-import com.qianbao.service.business.myinterface.AssetService;
-import com.qianbao.service.business.myinterface.DebtService;
-import com.qianbao.service.business.myinterface.SerialNumberService;
+import com.qianbao.service.myinterface.AssetService;
+import com.qianbao.service.myinterface.DebtService;
+import com.qianbao.service.myinterface.SerialNumberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -57,6 +58,9 @@ public class AssetServiceImpl implements AssetService{
     private DebtMapper debtMapper;
 
     @Autowired
+    private AgreementMapper agreementMapper;
+
+    @Autowired
     private TxRecordMapper txRecordMapper;
 
     @Autowired
@@ -89,7 +93,7 @@ public class AssetServiceImpl implements AssetService{
         int assetID = asset.getAssetID();
         // 区块链交互
         HttpHeaders headers = new HttpHeaders();
-        headers.set("authorization", "Bearer " + SysProperties.ORG2_TOKEN);
+        headers.set("authorization", "Bearer " + userinfoUtil.getBcToken());
         headers.set("content-type", "application/json");
 
         JSONObject params = new JSONObject();
@@ -181,7 +185,7 @@ public class AssetServiceImpl implements AssetService{
 
         String url = SysProperties.BLOCKCHAIN_SDK_BASEURL + "channels/mychannel/chaincodes/ClaimsPackageInfo";
         HttpHeaders headers = new HttpHeaders();
-        headers.set("authorization", "Bearer " + SysProperties.ORG2_TOKEN);
+        headers.set("authorization", "Bearer " + userinfoUtil.getBcToken());
         headers.set("content-type", "application/json");
 
         JSONObject params = new JSONObject();
@@ -193,7 +197,8 @@ public class AssetServiceImpl implements AssetService{
         args.add("user" + userinfoUtil.getUserID());
         args.add("" + assetID);
         JSONObject bcSaleAgreementInfo = new JSONObject();
-        bcSaleAgreementInfo.put("Url", "www.qianbao.com/cc/11");
+        String agreementID = serialNumberService.generateSerialNumber("AG");
+        bcSaleAgreementInfo.put("Url", "/agreement/" + agreementID );
         bcSaleAgreementInfo.put("Hashcode", "40b3fa8de4e01e5b37928ff03c7c6f0b");
         args.add(JSONObject.toJSONString(bcSaleAgreementInfo));
         params.put("args", args);
@@ -202,6 +207,15 @@ public class AssetServiceImpl implements AssetService{
         HttpEntity<String> response = restTemplate.exchange(
                 //这里放JSONObject, String 都可以。因为JSONObject返回的时候其实也就是string
                 url, HttpMethod.POST, entity, String.class);
+
+        Agreement agreement = new Agreement();
+        agreement.setAgreementID(agreementID);
+        agreement.setAgreementType(1);
+        agreement.setBcPosition(response.getBody());
+        agreement.setPublisher("user" + userinfoUtil.getUserID());
+        agreement.setCreateTime(new Date());
+        agreement.setModifyTime(new Date());
+        agreementMapper.insert(agreement);
         return 0;
     }
 
@@ -213,7 +227,7 @@ public class AssetServiceImpl implements AssetService{
         assetMapper.update(asset);
         String url = SysProperties.BLOCKCHAIN_SDK_BASEURL + "channels/mychannel/chaincodes/ClaimsPackageInfo";
         HttpHeaders headers = new HttpHeaders();
-        headers.set("authorization", "Bearer " + SysProperties.ORG2_TOKEN);
+        headers.set("authorization", "Bearer " + userinfoUtil.getBcToken());
         headers.set("content-type", "application/json");
 
         JSONObject params = new JSONObject();
@@ -225,7 +239,8 @@ public class AssetServiceImpl implements AssetService{
         args.add("user" + userinfoUtil.getUserID());
         args.add("" + assetID);
         JSONObject bcSaleAgreementInfo = new JSONObject();
-        bcSaleAgreementInfo.put("Url", "www.qianbao.com/cc/11");
+        String agreementID = serialNumberService.generateSerialNumber("AG");
+        bcSaleAgreementInfo.put("Url", "/agreement/" + agreementID );
         bcSaleAgreementInfo.put("Hashcode", "40b3fa8de4e01e5b37928ff03c7c6f0b");
         args.add(JSONObject.toJSONString(bcSaleAgreementInfo));
         params.put("args", args);
@@ -234,6 +249,15 @@ public class AssetServiceImpl implements AssetService{
         HttpEntity<String> response = restTemplate.exchange(
                 //这里放JSONObject, String 都可以。因为JSONObject返回的时候其实也就是string
                 url, HttpMethod.POST, entity, String.class);
+
+        Agreement agreement = new Agreement();
+        agreement.setAgreementID(agreementID);
+        agreement.setAgreementType(1);
+        agreement.setBcPosition(response.getBody());
+        agreement.setPublisher("user" + userinfoUtil.getUserID());
+        agreement.setCreateTime(new Date());
+        agreement.setModifyTime(new Date());
+        agreementMapper.insert(agreement);
         return 0;
     }
 
@@ -246,7 +270,7 @@ public class AssetServiceImpl implements AssetService{
 
         String url = SysProperties.BLOCKCHAIN_SDK_BASEURL + "channels/mychannel/chaincodes/ClaimsPackageInfo";
         HttpHeaders headers = new HttpHeaders();
-        headers.set("authorization", "Bearer " + SysProperties.ORG2_TOKEN);
+        headers.set("authorization", "Bearer " + userinfoUtil.getBcToken());
         headers.set("content-type", "application/json");
 
         JSONObject params = new JSONObject();
@@ -258,7 +282,8 @@ public class AssetServiceImpl implements AssetService{
         args.add("user" + userinfoUtil.getUserID());
         args.add("" + assetID);
         JSONObject bcSaleAgreementInfo = new JSONObject();
-        bcSaleAgreementInfo.put("Url", "www.qianbao.com/cc/11");
+        String agreementID = serialNumberService.generateSerialNumber("AG");
+        bcSaleAgreementInfo.put("Url", "/agreement/" + agreementID );
         bcSaleAgreementInfo.put("Hashcode", "40b3fa8de4e01e5b37928ff03c7c6f0b");
         args.add(JSONObject.toJSONString(bcSaleAgreementInfo));
         params.put("args", args);
@@ -267,6 +292,15 @@ public class AssetServiceImpl implements AssetService{
         HttpEntity<String> response = restTemplate.exchange(
                 //这里放JSONObject, String 都可以。因为JSONObject返回的时候其实也就是string
                 url, HttpMethod.POST, entity, String.class);
+
+        Agreement agreement = new Agreement();
+        agreement.setAgreementID(agreementID);
+        agreement.setAgreementType(1);
+        agreement.setBcPosition(response.getBody());
+        agreement.setPublisher("user" + userinfoUtil.getUserID());
+        agreement.setCreateTime(new Date());
+        agreement.setModifyTime(new Date());
+        agreementMapper.insert(agreement);
         return 0;
     }
 
@@ -279,7 +313,7 @@ public class AssetServiceImpl implements AssetService{
 
         String url = SysProperties.BLOCKCHAIN_SDK_BASEURL + "channels/mychannel/chaincodes/ClaimsPackageInfo";
         HttpHeaders headers = new HttpHeaders();
-        headers.set("authorization", "Bearer " + SysProperties.ORG2_TOKEN);
+        headers.set("authorization", "Bearer " + userinfoUtil.getBcToken());
         headers.set("content-type", "application/json");
 
         JSONObject params = new JSONObject();
@@ -291,7 +325,8 @@ public class AssetServiceImpl implements AssetService{
         args.add("user" + userinfoUtil.getUserID());
         args.add("" + assetID);
         JSONObject bcSaleAgreementInfo = new JSONObject();
-        bcSaleAgreementInfo.put("Url", "www.qianbao.com/cc/11");
+        String agreementID = serialNumberService.generateSerialNumber("AG");
+        bcSaleAgreementInfo.put("Url", "/agreement/" + agreementID );
         bcSaleAgreementInfo.put("Hashcode", "40b3fa8de4e01e5b37928ff03c7c6f0b");
         args.add(JSONObject.toJSONString(bcSaleAgreementInfo));
         params.put("args", args);
@@ -300,6 +335,15 @@ public class AssetServiceImpl implements AssetService{
         HttpEntity<String> response = restTemplate.exchange(
                 //这里放JSONObject, String 都可以。因为JSONObject返回的时候其实也就是string
                 url, HttpMethod.POST, entity, String.class);
+
+        Agreement agreement = new Agreement();
+        agreement.setAgreementID(agreementID);
+        agreement.setAgreementType(1);
+        agreement.setBcPosition(response.getBody());
+        agreement.setPublisher("user" + userinfoUtil.getUserID());
+        agreement.setCreateTime(new Date());
+        agreement.setModifyTime(new Date());
+        agreementMapper.insert(agreement);
         return 0;
     }
 
@@ -312,7 +356,7 @@ public class AssetServiceImpl implements AssetService{
 
         String url = SysProperties.BLOCKCHAIN_SDK_BASEURL + "channels/mychannel/chaincodes/ClaimsPackageInfo";
         HttpHeaders headers = new HttpHeaders();
-        headers.set("authorization", "Bearer " + SysProperties.ORG2_TOKEN);
+        headers.set("authorization", "Bearer " + userinfoUtil.getBcToken());
         headers.set("content-type", "application/json");
 
         JSONObject params = new JSONObject();
@@ -324,7 +368,8 @@ public class AssetServiceImpl implements AssetService{
         args.add("user" + userinfoUtil.getUserID());
         args.add("" + assetID);
         JSONObject bcSaleAgreementInfo = new JSONObject();
-        bcSaleAgreementInfo.put("Url", "www.qianbao.com/cc/11");
+        String agreementID = serialNumberService.generateSerialNumber("AG");
+        bcSaleAgreementInfo.put("Url", "/agreement/" + agreementID );
         bcSaleAgreementInfo.put("Hashcode", "40b3fa8de4e01e5b37928ff03c7c6f0b");
         args.add(JSONObject.toJSONString(bcSaleAgreementInfo));
         params.put("args", args);
@@ -333,6 +378,15 @@ public class AssetServiceImpl implements AssetService{
         HttpEntity<String> response = restTemplate.exchange(
                 //这里放JSONObject, String 都可以。因为JSONObject返回的时候其实也就是string
                 url, HttpMethod.POST, entity, String.class);
+
+        Agreement agreement = new Agreement();
+        agreement.setAgreementID(agreementID);
+        agreement.setAgreementType(1);
+        agreement.setBcPosition(response.getBody());
+        agreement.setPublisher("user" + userinfoUtil.getUserID());
+        agreement.setCreateTime(new Date());
+        agreement.setModifyTime(new Date());
+        agreementMapper.insert(agreement);
         return 0;
     }
 
@@ -345,7 +399,7 @@ public class AssetServiceImpl implements AssetService{
 
         String url = SysProperties.BLOCKCHAIN_SDK_BASEURL + "channels/mychannel/chaincodes/ClaimsPackageInfo";
         HttpHeaders headers = new HttpHeaders();
-        headers.set("authorization", "Bearer " + SysProperties.ORG2_TOKEN);
+        headers.set("authorization", "Bearer " + userinfoUtil.getBcToken());
         headers.set("content-type", "application/json");
 
         JSONObject params = new JSONObject();
@@ -357,7 +411,8 @@ public class AssetServiceImpl implements AssetService{
         args.add("user" + userinfoUtil.getUserID());
         args.add("" + assetID);
         JSONObject bcSaleAgreementInfo = new JSONObject();
-        bcSaleAgreementInfo.put("Url", "www.qianbao.com/cc/11");
+        String agreementID = serialNumberService.generateSerialNumber("AG");
+        bcSaleAgreementInfo.put("Url", "/agreement/" + agreementID );
         bcSaleAgreementInfo.put("Hashcode", "40b3fa8de4e01e5b37928ff03c7c6f0b");
         args.add(JSONObject.toJSONString(bcSaleAgreementInfo));
         params.put("args", args);
@@ -366,6 +421,15 @@ public class AssetServiceImpl implements AssetService{
         HttpEntity<String> response = restTemplate.exchange(
                 //这里放JSONObject, String 都可以。因为JSONObject返回的时候其实也就是string
                 url, HttpMethod.POST, entity, String.class);
+
+        Agreement agreement = new Agreement();
+        agreement.setAgreementID(agreementID);
+        agreement.setAgreementType(1);
+        agreement.setBcPosition(response.getBody());
+        agreement.setPublisher("user" + userinfoUtil.getUserID());
+        agreement.setCreateTime(new Date());
+        agreement.setModifyTime(new Date());
+        agreementMapper.insert(agreement);
         return 0;
     }
 
@@ -378,7 +442,7 @@ public class AssetServiceImpl implements AssetService{
 
         String url = SysProperties.BLOCKCHAIN_SDK_BASEURL + "channels/mychannel/chaincodes/ClaimsPackageInfo";
         HttpHeaders headers = new HttpHeaders();
-        headers.set("authorization", "Bearer " + SysProperties.ORG2_TOKEN);
+        headers.set("authorization", "Bearer " + userinfoUtil.getBcToken());
         headers.set("content-type", "application/json");
 
         JSONObject params = new JSONObject();
@@ -390,7 +454,8 @@ public class AssetServiceImpl implements AssetService{
         args.add("user" + userinfoUtil.getUserID());
         args.add("" + assetID);
         JSONObject bcSaleAgreementInfo = new JSONObject();
-        bcSaleAgreementInfo.put("Url", "www.qianbao.com/cc/11");
+        String agreementID = serialNumberService.generateSerialNumber("AG");
+        bcSaleAgreementInfo.put("Url", "/agreement/" + agreementID );
         bcSaleAgreementInfo.put("Hashcode", "40b3fa8de4e01e5b37928ff03c7c6f0b");
         args.add(JSONObject.toJSONString(bcSaleAgreementInfo));
         params.put("args", args);
@@ -399,6 +464,15 @@ public class AssetServiceImpl implements AssetService{
         HttpEntity<String> response = restTemplate.exchange(
                 //这里放JSONObject, String 都可以。因为JSONObject返回的时候其实也就是string
                 url, HttpMethod.POST, entity, String.class);
+
+        Agreement agreement = new Agreement();
+        agreement.setAgreementID(agreementID);
+        agreement.setAgreementType(1);
+        agreement.setBcPosition(response.getBody());
+        agreement.setPublisher("user" + userinfoUtil.getUserID());
+        agreement.setCreateTime(new Date());
+        agreement.setModifyTime(new Date());
+        agreementMapper.insert(agreement);
         return 0;
     }
 
@@ -411,7 +485,7 @@ public class AssetServiceImpl implements AssetService{
 
         String url = SysProperties.BLOCKCHAIN_SDK_BASEURL + "channels/mychannel/chaincodes/ClaimsPackageInfo";
         HttpHeaders headers = new HttpHeaders();
-        headers.set("authorization", "Bearer " + SysProperties.ORG2_TOKEN);
+        headers.set("authorization", "Bearer " + userinfoUtil.getBcToken());
         headers.set("content-type", "application/json");
 
         JSONObject params = new JSONObject();
@@ -423,7 +497,8 @@ public class AssetServiceImpl implements AssetService{
         args.add("user" + userinfoUtil.getUserID());
         args.add("" + assetID);
         JSONObject bcSaleAgreementInfo = new JSONObject();
-        bcSaleAgreementInfo.put("Url", "www.qianbao.com/cc/11");
+        String agreementID = serialNumberService.generateSerialNumber("AG");
+        bcSaleAgreementInfo.put("Url", "/agreement/" + agreementID );
         bcSaleAgreementInfo.put("Hashcode", "40b3fa8de4e01e5b37928ff03c7c6f0b");
         args.add(JSONObject.toJSONString(bcSaleAgreementInfo));
         params.put("args", args);
@@ -432,6 +507,15 @@ public class AssetServiceImpl implements AssetService{
         HttpEntity<String> response = restTemplate.exchange(
                 //这里放JSONObject, String 都可以。因为JSONObject返回的时候其实也就是string
                 url, HttpMethod.POST, entity, String.class);
+
+        Agreement agreement = new Agreement();
+        agreement.setAgreementID(agreementID);
+        agreement.setAgreementType(1);
+        agreement.setBcPosition(response.getBody());
+        agreement.setPublisher("user" + userinfoUtil.getUserID());
+        agreement.setCreateTime(new Date());
+        agreement.setModifyTime(new Date());
+        agreementMapper.insert(agreement);
         recordPosteriorSubscription(assetID);
         return 0;
     }
@@ -439,7 +523,7 @@ public class AssetServiceImpl implements AssetService{
     public int recordPosteriorSubscription(int assetID){
         String url = SysProperties.BLOCKCHAIN_SDK_BASEURL + "channels/mychannel/chaincodes/ClaimsPackageInfo";
         HttpHeaders headers = new HttpHeaders();
-        headers.set("authorization", "Bearer " + SysProperties.ORG2_TOKEN);
+        headers.set("authorization", "Bearer " + userinfoUtil.getBcToken());
         headers.set("content-type", "application/json");
 
         JSONObject params = new JSONObject();
@@ -450,7 +534,7 @@ public class AssetServiceImpl implements AssetService{
         JSONArray args = new JSONArray();
         args.add("user" + userinfoUtil.getUserID());
         args.add("" + assetID);
-        args.add("RECORDID01");
+        args.add(serialNumberService.generateSerialNumber("RECORDID"));
         JSONObject bcSaleAgreementInfo = new JSONObject();
         bcSaleAgreementInfo.put("ProductID", "" + assetID);
         bcSaleAgreementInfo.put("WaterFlowNumber", "11111111");
@@ -478,7 +562,7 @@ public class AssetServiceImpl implements AssetService{
 
         String url = SysProperties.BLOCKCHAIN_SDK_BASEURL + "channels/mychannel/chaincodes/ClaimsPackageInfo";
         HttpHeaders headers = new HttpHeaders();
-        headers.set("authorization", "Bearer " + SysProperties.ORG2_TOKEN);
+        headers.set("authorization", "Bearer " + userinfoUtil.getBcToken());
         headers.set("content-type", "application/json");
 
         JSONObject params = new JSONObject();
@@ -490,7 +574,8 @@ public class AssetServiceImpl implements AssetService{
         args.add("user" + userinfoUtil.getUserID());
         args.add("" + assetID);
         JSONObject bcSaleAgreementInfo = new JSONObject();
-        bcSaleAgreementInfo.put("Url", "www.qianbao.com/cc/11");
+        String agreementID = serialNumberService.generateSerialNumber("AG");
+        bcSaleAgreementInfo.put("Url", "/agreement/" + agreementID );
         bcSaleAgreementInfo.put("Hashcode", "40b3fa8de4e01e5b37928ff03c7c6f0b");
         args.add(JSONObject.toJSONString(bcSaleAgreementInfo));
         params.put("args", args);
@@ -499,6 +584,15 @@ public class AssetServiceImpl implements AssetService{
         HttpEntity<String> response = restTemplate.exchange(
                 //这里放JSONObject, String 都可以。因为JSONObject返回的时候其实也就是string
                 url, HttpMethod.POST, entity, String.class);
+
+        Agreement agreement = new Agreement();
+        agreement.setAgreementID(agreementID);
+        agreement.setAgreementType(1);
+        agreement.setBcPosition(response.getBody());
+        agreement.setPublisher("user" + userinfoUtil.getUserID());
+        agreement.setCreateTime(new Date());
+        agreement.setModifyTime(new Date());
+        agreementMapper.insert(agreement);
         recordSubPosteriorSubscription(assetID);
         return 0;
     }
@@ -506,7 +600,7 @@ public class AssetServiceImpl implements AssetService{
     public int recordSubPosteriorSubscription(int assetID){
         String url = SysProperties.BLOCKCHAIN_SDK_BASEURL + "channels/mychannel/chaincodes/ClaimsPackageInfo";
         HttpHeaders headers = new HttpHeaders();
-        headers.set("authorization", "Bearer " + SysProperties.ORG2_TOKEN);
+        headers.set("authorization", "Bearer " + userinfoUtil.getBcToken());
         headers.set("content-type", "application/json");
 
         JSONObject params = new JSONObject();
@@ -517,7 +611,7 @@ public class AssetServiceImpl implements AssetService{
         JSONArray args = new JSONArray();
         args.add("user" + userinfoUtil.getUserID());
         args.add("" + assetID);
-        args.add("RECORDID01");
+        args.add(serialNumberService.generateSerialNumber("RECORDID"));
         JSONObject bcSaleAgreementInfo = new JSONObject();
         bcSaleAgreementInfo.put("ProductID", "" + assetID);
         bcSaleAgreementInfo.put("WaterFlowNumber", "11111111");
@@ -546,7 +640,7 @@ public class AssetServiceImpl implements AssetService{
 
         String url = SysProperties.BLOCKCHAIN_SDK_BASEURL + "channels/mychannel/chaincodes/ClaimsPackageInfo";
         HttpHeaders headers = new HttpHeaders();
-        headers.set("authorization", "Bearer " + SysProperties.ORG2_TOKEN);
+        headers.set("authorization", "Bearer " + userinfoUtil.getBcToken());
         headers.set("content-type", "application/json");
 
         JSONObject params = new JSONObject();
@@ -558,7 +652,8 @@ public class AssetServiceImpl implements AssetService{
         args.add("user" + userinfoUtil.getUserID());
         args.add("" + assetID);
         JSONObject bcSaleAgreementInfo = new JSONObject();
-        bcSaleAgreementInfo.put("Url", "www.qianbao.com/cc/11");
+        String agreementID = serialNumberService.generateSerialNumber("AG");
+        bcSaleAgreementInfo.put("Url", "/agreement/" + agreementID );
         bcSaleAgreementInfo.put("Hashcode", "40b3fa8de4e01e5b37928ff03c7c6f0b");
         args.add(JSONObject.toJSONString(bcSaleAgreementInfo));
         params.put("args", args);
@@ -567,6 +662,15 @@ public class AssetServiceImpl implements AssetService{
         HttpEntity<String> response = restTemplate.exchange(
                 //这里放JSONObject, String 都可以。因为JSONObject返回的时候其实也就是string
                 url, HttpMethod.POST, entity, String.class);
+
+        Agreement agreement = new Agreement();
+        agreement.setAgreementID(agreementID);
+        agreement.setAgreementType(1);
+        agreement.setBcPosition(response.getBody());
+        agreement.setPublisher("user" + userinfoUtil.getUserID());
+        agreement.setCreateTime(new Date());
+        agreement.setModifyTime(new Date());
+        agreementMapper.insert(agreement);
         recordPriorSubscription(assetID);
         // 当状态值为11，智能合约向银行发出分账指令
         this.bankCredit(assetID);
@@ -576,7 +680,7 @@ public class AssetServiceImpl implements AssetService{
     public int recordPriorSubscription(int assetID){
         String url = SysProperties.BLOCKCHAIN_SDK_BASEURL + "channels/mychannel/chaincodes/ClaimsPackageInfo";
         HttpHeaders headers = new HttpHeaders();
-        headers.set("authorization", "Bearer " + SysProperties.ORG2_TOKEN);
+        headers.set("authorization", "Bearer " + userinfoUtil.getBcToken());
         headers.set("content-type", "application/json");
 
         JSONObject params = new JSONObject();
@@ -587,7 +691,7 @@ public class AssetServiceImpl implements AssetService{
         JSONArray args = new JSONArray();
         args.add("user" + userinfoUtil.getUserID());
         args.add("" + assetID);
-        args.add("RECORDID01");
+        args.add(serialNumberService.generateSerialNumber("RECORDID"));
         JSONObject bcSaleAgreementInfo = new JSONObject();
         bcSaleAgreementInfo.put("ProductID", "" + assetID);
         bcSaleAgreementInfo.put("WaterFlowNumber", "11111111");
@@ -615,7 +719,7 @@ public class AssetServiceImpl implements AssetService{
         assetMapper.update(asset);
         String url = SysProperties.BLOCKCHAIN_SDK_BASEURL + "channels/mychannel/chaincodes/ClaimsPackageInfo";
         HttpHeaders headers = new HttpHeaders();
-        headers.set("authorization", "Bearer " + SysProperties.ORG2_TOKEN);
+        headers.set("authorization", "Bearer " + userinfoUtil.getBcToken());
         headers.set("content-type", "application/json");
 
         JSONObject params = new JSONObject();
@@ -626,7 +730,7 @@ public class AssetServiceImpl implements AssetService{
         JSONArray args = new JSONArray();
         args.add("user" + userinfoUtil.getUserID());
         args.add("" + assetID);
-        args.add("RECORDID01");
+        args.add(serialNumberService.generateSerialNumber("RECORDID"));
         JSONObject bcSaleAgreementInfo = new JSONObject();
         bcSaleAgreementInfo.put("ProductID", "" + assetID);
         bcSaleAgreementInfo.put("WaterFlowNumber", "11111111");
@@ -648,7 +752,7 @@ public class AssetServiceImpl implements AssetService{
     public int recordBankCredit(int assetID){
         String url = SysProperties.BLOCKCHAIN_SDK_BASEURL + "channels/mychannel/chaincodes/ClaimsPackageInfo";
         HttpHeaders headers = new HttpHeaders();
-        headers.set("authorization", "Bearer " + SysProperties.ORG2_TOKEN);
+        headers.set("authorization", "Bearer " + userinfoUtil.getBcToken());
         headers.set("content-type", "application/json");
 
         JSONObject params = new JSONObject();
@@ -688,7 +792,28 @@ public class AssetServiceImpl implements AssetService{
 
     @Override
     public AssetQueryWrapper getAssetDetail(int assetID) {
-        return assetMapper.getByAssetID(assetID);
+        AssetQueryWrapper assetQueryWrapper = assetMapper.getByAssetID(assetID);
+        StringBuilder urlBuilder = new StringBuilder(SysProperties.BLOCKCHAIN_SDK_BASEURL);
+        urlBuilder.append("channels/mychannel/chaincodes/ClaimsPackageInfo")
+                .append("?peer=peer1&fcn=queryClaimsPackageInfo&args=[\"")
+                .append(assetID).append("\"]");
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("authorization", "Bearer " + userinfoUtil.getBcToken());
+        // headers.set("content-type", "application/json");
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<JSONObject> entity = new HttpEntity<JSONObject>(null, headers);
+        HttpEntity<String> response = restTemplate.exchange(
+                //这里放JSONObject, String 都可以。因为JSONObject返回的时候其实也就是string
+                urlBuilder.toString(), HttpMethod.GET, entity, String.class);
+        JSONObject jsonObject = JSONObject.parseObject(response.getBody());
+        assetQueryWrapper.setSaleAgreementUrl((String)((JSONObject)jsonObject.get("SaleAgreement")).get("Url"));
+        assetQueryWrapper.setGuaranteeAgreementUrl((String)((JSONObject)jsonObject.get("GuaranteeAgrement")).get("Url"));
+        assetQueryWrapper.setSubscriptionAgreementUrl((String)((JSONObject)jsonObject.get("SubprimeAssetSubscriptionAgreement")).get("Url"));
+        assetQueryWrapper.setProductPlanInstructionUrl((String)((JSONObject)jsonObject.get("ProductDesignAgreement")).get("Url"));
+        assetQueryWrapper.setRatingInstructionUrl((String)((JSONObject)jsonObject.get("AssetRatingInstruction")).get("Url"));
+        assetQueryWrapper.setAccountantOpinionUrl((String)((JSONObject)jsonObject.get("AccountOpinion")).get("Url"));
+        assetQueryWrapper.setLegalOpinionUrl((String)((JSONObject)jsonObject.get("LegalOpinion")).get("Url"));
+        return assetQueryWrapper;
     }
 
     @Override

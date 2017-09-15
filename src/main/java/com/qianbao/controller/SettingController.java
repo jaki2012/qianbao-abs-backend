@@ -3,7 +3,7 @@ package com.qianbao.controller;
 import com.qianbao.common.sys.Result;
 import com.qianbao.common.util.ResultUtil;
 import com.qianbao.domain.RateSetting;
-import com.qianbao.service.business.myinterface.RateSettingService;
+import com.qianbao.service.myinterface.RateSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
