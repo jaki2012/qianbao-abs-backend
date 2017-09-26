@@ -3,6 +3,7 @@ package com.qianbao.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.qianbao.common.annotation.CurrentUser;
 import com.qianbao.common.sys.Result;
+import com.qianbao.common.util.PDFUtil;
 import com.qianbao.common.util.ResultUtil;
 import com.qianbao.domain.*;
 import com.qianbao.service.myinterface.AssetService;
@@ -22,6 +23,7 @@ import java.util.Map;
  * @description abs主要业务controller分发器
  */
 @RestController
+@CrossOrigin(value = "*")
 public class MainController {
 
     @Autowired
@@ -29,6 +31,9 @@ public class MainController {
 
     @Autowired
     private AssetService assetService;
+
+    @Autowired
+    private PDFUtil pdfUtil;
 
     @RequestMapping(value = "/allunrevieweddebts", method = RequestMethod.GET)
     public Result initialDebtsPool(@RequestParam(value = "startDate", required = false) @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")Date startDate,
@@ -113,6 +118,12 @@ public class MainController {
     @GetMapping(value = "/initialOptions")
     public Result getInitialOptions(){
         return ResultUtil.success(assetService.getInitialOptions());
+    }
+
+    @GetMapping(value = "/pdfTest")
+    public Result getPdfOptions(){
+        pdfUtil.signature();
+        return ResultUtil.success();
     }
 
 }

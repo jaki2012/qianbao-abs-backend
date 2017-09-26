@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/setting")
+@CrossOrigin(value = "*")
 public class SettingController {
 
     @Autowired

@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping(value = "/asset")
+@CrossOrigin(value = "*")
 public class AssetController {
 
     @Autowired

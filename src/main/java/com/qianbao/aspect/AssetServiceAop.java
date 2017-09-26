@@ -72,7 +72,7 @@ public class AssetServiceAop {
         StringBuilder urlBuilder = new StringBuilder(SysProperties.BLOCKCHAIN_SDK_BASEURL);
         urlBuilder.append("users");
         JSONObject params = new JSONObject();
-        params.put("username", ""+userinfoUtil.getUserID());
+        params.put("username", "user"+userinfoUtil.getUserID());
         params.put("orgName", "org2");
         JSONObject json= restTemplate.postForEntity(urlBuilder.toString(), params, JSONObject.class).getBody();
         userinfoUtil.setBcToken(json.getString("token"));

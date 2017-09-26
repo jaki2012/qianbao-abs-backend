@@ -252,7 +252,7 @@ public class AssetServiceImpl implements AssetService{
 
         Agreement agreement = new Agreement();
         agreement.setAgreementID(agreementID);
-        agreement.setAgreementType(1);
+        agreement.setAgreementType(2);
         agreement.setBcPosition(response.getBody());
         agreement.setPublisher("user" + userinfoUtil.getUserID());
         agreement.setCreateTime(new Date());
@@ -295,7 +295,7 @@ public class AssetServiceImpl implements AssetService{
 
         Agreement agreement = new Agreement();
         agreement.setAgreementID(agreementID);
-        agreement.setAgreementType(1);
+        agreement.setAgreementType(3);
         agreement.setBcPosition(response.getBody());
         agreement.setPublisher("user" + userinfoUtil.getUserID());
         agreement.setCreateTime(new Date());
@@ -338,7 +338,7 @@ public class AssetServiceImpl implements AssetService{
 
         Agreement agreement = new Agreement();
         agreement.setAgreementID(agreementID);
-        agreement.setAgreementType(1);
+        agreement.setAgreementType(4);
         agreement.setBcPosition(response.getBody());
         agreement.setPublisher("user" + userinfoUtil.getUserID());
         agreement.setCreateTime(new Date());
@@ -381,7 +381,7 @@ public class AssetServiceImpl implements AssetService{
 
         Agreement agreement = new Agreement();
         agreement.setAgreementID(agreementID);
-        agreement.setAgreementType(1);
+        agreement.setAgreementType(5);
         agreement.setBcPosition(response.getBody());
         agreement.setPublisher("user" + userinfoUtil.getUserID());
         agreement.setCreateTime(new Date());
@@ -424,7 +424,7 @@ public class AssetServiceImpl implements AssetService{
 
         Agreement agreement = new Agreement();
         agreement.setAgreementID(agreementID);
-        agreement.setAgreementType(1);
+        agreement.setAgreementType(6);
         agreement.setBcPosition(response.getBody());
         agreement.setPublisher("user" + userinfoUtil.getUserID());
         agreement.setCreateTime(new Date());
@@ -467,7 +467,7 @@ public class AssetServiceImpl implements AssetService{
 
         Agreement agreement = new Agreement();
         agreement.setAgreementID(agreementID);
-        agreement.setAgreementType(1);
+        agreement.setAgreementType(7);
         agreement.setBcPosition(response.getBody());
         agreement.setPublisher("user" + userinfoUtil.getUserID());
         agreement.setCreateTime(new Date());
@@ -510,7 +510,7 @@ public class AssetServiceImpl implements AssetService{
 
         Agreement agreement = new Agreement();
         agreement.setAgreementID(agreementID);
-        agreement.setAgreementType(1);
+        agreement.setAgreementType(8);
         agreement.setBcPosition(response.getBody());
         agreement.setPublisher("user" + userinfoUtil.getUserID());
         agreement.setCreateTime(new Date());
@@ -587,7 +587,7 @@ public class AssetServiceImpl implements AssetService{
 
         Agreement agreement = new Agreement();
         agreement.setAgreementID(agreementID);
-        agreement.setAgreementType(1);
+        agreement.setAgreementType(9);
         agreement.setBcPosition(response.getBody());
         agreement.setPublisher("user" + userinfoUtil.getUserID());
         agreement.setCreateTime(new Date());
@@ -665,7 +665,7 @@ public class AssetServiceImpl implements AssetService{
 
         Agreement agreement = new Agreement();
         agreement.setAgreementID(agreementID);
-        agreement.setAgreementType(1);
+        agreement.setAgreementType(10);
         agreement.setBcPosition(response.getBody());
         agreement.setPublisher("user" + userinfoUtil.getUserID());
         agreement.setCreateTime(new Date());
