@@ -6,10 +6,12 @@ import com.qianbao.domain.Agreement;
 import com.qianbao.mapper.AgreementMapper;
 import org.aspectj.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -77,7 +79,12 @@ public class AgreementController {
                 agreementFile = "基础资产认购协议.pdf";
             }
         }
-        File file = new File("/Users/lijiechu/Desktop/ABS协议准备/" + agreementFile);
+        File file = null;
+        try {
+            file = ResourceUtils.getFile("classpath:agreementFiles/" + agreementFile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         OutputStream out = null;
         try {
             // response.setContentType("application/octet-stream; charset=utf-8");
@@ -142,12 +149,17 @@ public class AgreementController {
                 agreementFile = "基础资产认购协议.pdf";
             }
         }
-        File file = new File("/Users/lijiechu/Desktop/ABS协议准备/" + agreementFile);
+        File file = null;
+        try {
+            file = ResourceUtils.getFile("classpath:agreementFiles/" + agreementFile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         OutputStream out = null;
             try {
-                response.setContentType("application/octet-stream; charset=utf-8");
+                response.setContentType("application/pdf");
                 // 解决中文乱码问题
-                response.setHeader("Content-Disposition", "agreementFile; filename=" + new String((agreementFile).getBytes("gbk"),"iso-8859-1"));
+                response.setHeader("Content-Disposition", "filename=" + new String((agreementFile).getBytes("gbk"),"iso-8859-1"));
                 out = response.getOutputStream();
                 out.write(FileUtil.readAsByteArray(file));
                 out.flush();

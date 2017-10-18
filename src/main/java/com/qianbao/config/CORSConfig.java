@@ -11,7 +11,7 @@ import org.springframework.web.filter.CorsFilter;
  * @create on 17/9/16
  * @description 跨域请求配置
  */
-@Configuration
+//@Configuration
 public class CORSConfig {
     private CorsConfiguration buildConfig() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();

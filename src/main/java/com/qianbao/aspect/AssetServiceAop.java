@@ -56,7 +56,8 @@ public class AssetServiceAop {
 
     // 定义切点在非登录controller下 获取其userID
     @Pointcut("execution(* com.qianbao.controller.*.*(..)) && " +
-            "!execution(* com.qianbao.controller.AuthController.login(..))")
+            "!execution(* com.qianbao.controller.AuthController.login(..)) &&" +
+            "!execution(* com.qianbao.controller.AgreementController.*(..)) ")
     public void userIDPointCut(){
 
     }

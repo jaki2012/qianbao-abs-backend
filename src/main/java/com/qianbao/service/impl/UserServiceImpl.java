@@ -45,6 +45,7 @@ public class UserServiceImpl implements UserService {
         String companyName = userWrapper.getCompanyName();
         Company company = companyMapper.findByCompanyName(companyName);
         if(null == company){
+            company = new Company();
             company.setCompanyName(userWrapper.getCompanyName());
             company.setCompanyType(userWrapper.getCompanyType());
             // 设置创建时间、更新时间

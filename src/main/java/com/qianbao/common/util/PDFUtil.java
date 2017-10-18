@@ -54,7 +54,7 @@ public class PDFUtil {
             PdfReader pdfReader = new PdfReader("/Users/lijiechu/Desktop/ABS协议准备/认购协议——上海银行.pdf");
             PdfStamper pdfStamper = new PdfStamper(pdfReader, new FileOutputStream("/Users/lijiechu/Desktop/ABS协议准备/认购协议——上海银行2.pdf"));
             // 使用本地字体解决中英文显示问题
-            BaseFont basefont = BaseFont.createFont("/Users/lijiechu/Desktop/ABS协议准备/HYQH.ttf",
+            BaseFont basefont = BaseFont.createFont("agreementFiles/HYQH.ttf",
                     BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 
             Font font = new Font(basefont, 10);
