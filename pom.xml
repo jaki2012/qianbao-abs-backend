@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 
 	<name>qianbao-abs-backend</name>
-	<description>Demo project for Spring Boot</description>
+	<description>qianbao-abs backend system</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -85,6 +85,7 @@
 			<artifactId>fastjson</artifactId>
 			<version>1.2.37</version>
 		</dependency>
+
 	</dependencies>
 
 	<build>
