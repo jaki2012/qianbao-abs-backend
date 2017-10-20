@@ -34,7 +34,7 @@ public interface UserMapper {
             "values(#{companyID}, #{roleID}, #{username}, #{password}, #{sex}, #{account}, #{createTime}, #{modifyTime})")
     int insert(User user);
 
-    @Select("select * from tbUser")
+    @Select("select * from tbUser order by createTime desc")
     List<User> findAll();
 
 }
