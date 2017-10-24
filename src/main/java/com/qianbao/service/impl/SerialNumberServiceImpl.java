@@ -1,5 +1,6 @@
 package com.qianbao.service.impl;
 
+import com.qianbao.common.sys.Constants;
 import com.qianbao.common.util.StringUtil;
 import com.qianbao.common.util.TimeUtil;
 import com.qianbao.common.redis.RedisDao;
@@ -25,6 +26,14 @@ public class SerialNumberServiceImpl implements SerialNumberService {
         // 构造redis的key
         // 添加bizCode以避免不同业务之间的流水单号共用
         String redisKey = bizCode + SERIAL_NUMBER + dateStr;
+
+        // 要么自己处理线程异常 要么抛出线程异常
+        try {
+            Thread.sleep(Constants.SERIALNUMBER_GENERATION_GAP);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         long sequence  = redisDao.incr(redisKey);
         StringBuilder serialNumberBuilder = new StringBuilder();
         serialNumberBuilder.append(bizCode).append(dateStr).append(StringUtil.fillStringWillZeroes("" + sequence));
