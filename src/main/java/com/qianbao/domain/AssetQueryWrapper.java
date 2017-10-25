@@ -7,13 +7,13 @@ package com.qianbao.domain;
  */
 public class AssetQueryWrapper extends Asset{
 
-    private int ratingMoney;
+    private float ratingMoney;
 
-    private int lawyerMoney;
+    private float lawyerMoney;
 
-    private int spvMoney;
+    private float spvMoney;
 
-    private int accountantMoney;
+    private float accountantMoney;
 
     // 债权买卖协议
     private String saleAgreementUrl;
@@ -30,35 +30,35 @@ public class AssetQueryWrapper extends Asset{
     // 认购协议
     private String subscriptionAgreementUrl;
 
-    public int getRatingMoney() {
+    public float getRatingMoney() {
         return ratingMoney;
     }
 
-    public void setRatingMoney(int ratingMoney) {
+    public void setRatingMoney(float ratingMoney) {
         this.ratingMoney = ratingMoney;
     }
 
-    public int getLawyerMoney() {
+    public float getLawyerMoney() {
         return lawyerMoney;
     }
 
-    public void setLawyerMoney(int lawyerMoney) {
+    public void setLawyerMoney(float lawyerMoney) {
         this.lawyerMoney = lawyerMoney;
     }
 
-    public int getSpvMoney() {
+    public float getSpvMoney() {
         return spvMoney;
     }
 
-    public void setSpvMoney(int spvMoney) {
+    public void setSpvMoney(float spvMoney) {
         this.spvMoney = spvMoney;
     }
 
-    public int getAccountantMoney() {
+    public float getAccountantMoney() {
         return accountantMoney;
     }
 
-    public void setAccountantMoney(int accountantMoney) {
+    public void setAccountantMoney(float accountantMoney) {
         this.accountantMoney = accountantMoney;
     }
 

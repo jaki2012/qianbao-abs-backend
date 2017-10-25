@@ -29,7 +29,7 @@ public class RateSetting {
         return lawyerFee;
     }
 
-    public void setLawyerFee(int lawyerFee) {
+    public void setLawyerFee(float lawyerFee) {
         this.lawyerFee = lawyerFee;
     }
 
@@ -37,7 +37,7 @@ public class RateSetting {
         return accountantFee;
     }
 
-    public void setAccountantFee(int accountantFee) {
+    public void setAccountantFee(float accountantFee) {
         this.accountantFee = accountantFee;
     }
 
@@ -45,7 +45,7 @@ public class RateSetting {
         return spvRate;
     }
 
-    public void setSpvRate(int spvRate) {
+    public void setSpvRate(float spvRate) {
         this.spvRate = spvRate;
     }
 
@@ -53,7 +53,7 @@ public class RateSetting {
         return ratingRate;
     }
 
-    public void setRatingRate(int ratingRate) {
+    public void setRatingRate(float ratingRate) {
         this.ratingRate = ratingRate;
     }
 }

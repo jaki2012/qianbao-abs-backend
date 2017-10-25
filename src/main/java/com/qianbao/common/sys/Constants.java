@@ -21,4 +21,9 @@ public class Constants {
      * 登录token相关
      */
     public final static int TOKEN_EXPIRES_HOURS = 72;
+
+    /**
+     * 生成序列号相关
+     */
+    public final static int SERIALNUMBER_GENERATION_GAP = 20;
 }

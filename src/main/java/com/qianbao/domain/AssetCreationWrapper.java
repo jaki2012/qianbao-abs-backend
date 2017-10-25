@@ -9,13 +9,13 @@ public class AssetCreationWrapper extends Asset {
 
     private String[] debtsNumbers;
 
-    private int ratingRate;
+    private float ratingRate;
 
-    private int lawyerMoney;
+    private float lawyerMoney;
 
-    private int spvRate;
+    private float spvRate;
 
-    private int accountantMoney;
+    private float accountantMoney;
 
     public String[] getDebtsNumbers() {
         return debtsNumbers;
@@ -25,35 +25,35 @@ public class AssetCreationWrapper extends Asset {
         this.debtsNumbers = debtsNumbers;
     }
 
-    public int getLawyerMoney() {
-        return lawyerMoney;
-    }
-
-    public void setLawyerMoney(int lawyerMoney) {
-        this.lawyerMoney = lawyerMoney;
-    }
-
-    public int getAccountantMoney() {
-        return accountantMoney;
-    }
-
-    public void setAccountantMoney(int accountantMoney) {
-        this.accountantMoney = accountantMoney;
-    }
-
-    public int getRatingRate() {
+    public float getRatingRate() {
         return ratingRate;
     }
 
-    public void setRatingRate(int ratingRate) {
+    public void setRatingRate(float ratingRate) {
         this.ratingRate = ratingRate;
     }
 
-    public int getSpvRate() {
+    public float getLawyerMoney() {
+        return lawyerMoney;
+    }
+
+    public void setLawyerMoney(float lawyerMoney) {
+        this.lawyerMoney = lawyerMoney;
+    }
+
+    public float getSpvRate() {
         return spvRate;
     }
 
-    public void setSpvRate(int spvRate) {
+    public void setSpvRate(float spvRate) {
         this.spvRate = spvRate;
+    }
+
+    public float getAccountantMoney() {
+        return accountantMoney;
+    }
+
+    public void setAccountantMoney(float accountantMoney) {
+        this.accountantMoney = accountantMoney;
     }
 }
