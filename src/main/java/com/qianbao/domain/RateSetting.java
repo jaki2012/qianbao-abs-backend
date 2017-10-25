@@ -9,13 +9,13 @@ public class RateSetting {
 
     private int id;
     // 律师费用
-    private int lawyerFee;
+    private float lawyerFee;
     // 审计费用
-    private int accountantFee;
+    private float accountantFee;
     // 信托管理费率(‰)
-    private int spvRate;
+    private float spvRate;
     // 资产评级费率(‰)
-    private int ratingRate;
+    private float ratingRate;
 
     public int getId() {
         return id;
@@ -25,7 +25,7 @@ public class RateSetting {
         this.id = id;
     }
 
-    public int getLawyerFee() {
+    public float getLawyerFee() {
         return lawyerFee;
     }
 
@@ -33,7 +33,7 @@ public class RateSetting {
         this.lawyerFee = lawyerFee;
     }
 
-    public int getAccountantFee() {
+    public float getAccountantFee() {
         return accountantFee;
     }
 
@@ -41,7 +41,7 @@ public class RateSetting {
         this.accountantFee = accountantFee;
     }
 
-    public int getSpvRate() {
+    public float getSpvRate() {
         return spvRate;
     }
 
@@ -49,7 +49,7 @@ public class RateSetting {
         this.spvRate = spvRate;
     }
 
-    public int getRatingRate() {
+    public float getRatingRate() {
         return ratingRate;
     }
 
